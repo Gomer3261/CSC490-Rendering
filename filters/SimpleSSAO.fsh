@@ -111,5 +111,5 @@ void main(void)
 
     //gl_FragColor = vec4(texture2D(fbo_render, f_texcoord).rgb*final_ao+final_gi, 1.0);
 
-    gl_FragColor = vec4(texture2D(fbo_render, f_texcoord).rgb*vec3(final_ao), 1.0);
+    gl_FragColor = vec4(vec3(final_ao), 1.0);
 }

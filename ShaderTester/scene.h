@@ -22,6 +22,9 @@ public:
 
     int getLightCount();
 private:
+    int m_screen_width;
+    int m_screen_height;
+
     QList<Light*> m_lights;
     QList<RenderObject*> m_objects;
     QList<ShaderPostProcess*> m_filters;

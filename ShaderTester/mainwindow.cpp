@@ -48,7 +48,7 @@ void MainWindow::openFile()
     }
     m_scene = new Scene();
     m_scene->addFilter(m_filters["ssao2"]);
-    //m_scene->addFilter(m_filters["depth"]);
+    m_scene->addFilter(m_filters["depth"]);
     //m_scene->addFilter(m_filters["depth2"]);
     //m_scene->addFilter(m_filters["ripple"]);
     ui->oglview->setScene(m_scene);

@@ -3,7 +3,9 @@
 Scene::Scene() :
     m_lights(),
     m_objects(),
-    m_filters()
+    m_filters(),
+    m_screen_width(0),
+    m_screen_height(0)
 {
     QMatrix4x4 lightTransform;
     lightTransform.rotate(-90, 1, 0, 0);
@@ -62,6 +64,8 @@ void Scene::initializeGL()
 }
 
 void Scene::resizeGL(int width, int height) {
+    m_screen_width = width;
+    m_screen_height = height;
     for(ShaderPostProcess* filter : m_filters) {
         filter->resizeGL(width, height);
     }
@@ -81,6 +85,10 @@ void Scene::paintGL()
         else
         {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
+        if( render_pass > 0 ) {
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, m_filters[render_pass-1]->getFrameBuffer());
         }
 
         glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -105,6 +113,7 @@ void Scene::paintGL()
             glDisable(GL_LIGHTING);
         } else {
             m_filters[render_pass-1]->paintGL();
+            glBlitFramebuffer(0, 0, m_screen_width, m_screen_height, 0, 0, m_screen_width, m_screen_height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
         }
     }
 
