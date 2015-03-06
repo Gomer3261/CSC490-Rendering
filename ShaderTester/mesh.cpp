@@ -74,6 +74,11 @@ void Mesh::addTriangle(unsigned int vertexIndex[3], unsigned int uvIndex[3], uns
     }
 }
 
+void Mesh::setMaterial(Material::Ptr material)
+{
+    m_material = material;
+}
+
 void Mesh::finalize() {
     qDebug() << "Finalizing Model:" << m_vertexCount << " vertices";
     float *vertices = new float[3*m_vertexCount];

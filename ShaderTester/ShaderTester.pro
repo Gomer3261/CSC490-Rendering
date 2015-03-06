@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     shader.cpp \
     shaderloader.cpp \
     shaderpostprocess.cpp \
-    shaderpostprocessripple.cpp
+    shaderpostprocessripple.cpp \
+    shaderpostprocessfocal.cpp \
+    objmaterialloader.cpp
 
 HEADERS  += mainwindow.h \
     openglview.h \
@@ -38,6 +40,8 @@ HEADERS  += mainwindow.h \
     shader.h \
     shaderloader.h \
     shaderpostprocess.h \
-    shaderpostprocessripple.h
+    shaderpostprocessripple.h \
+    shaderpostprocessfocal.h \
+    objmaterialloader.h
 
 FORMS    += mainwindow.ui

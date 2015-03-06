@@ -8,6 +8,7 @@
 
 #include "objloader.h"
 #include "scene.h"
+#include "shaderpostprocessfocal.h"
 #include "shaderpostprocessripple.h"
 
 namespace Ui {

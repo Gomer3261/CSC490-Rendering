@@ -40,7 +40,7 @@ void ObjLoader::parseObjFile(QString path)
     Mesh* mesh = NULL;
     RenderObject* object = NULL;
 
-    while( 1 ) {
+    for(;;) {
         char lineHeader[128];
         // read the first word of the line
         int res = fscanf(file, "%s", lineHeader);
@@ -69,8 +69,29 @@ void ObjLoader::parseObjFile(QString path)
             m_uvCount = 0;
             m_normalCount = 0;
         }
+        else if(strcmp( lineHeader, "mtllib" ) == 0)
+        {
+            char file_name[128];
+            fscanf(file, "%s\n", file_name);
+
+            QString mtl_file = path.left(path.lastIndexOf('/')+1);
+            mtl_file += file_name;
+
+            ObjMaterialLoader::parseObjMtlFile(mtl_file, &m_materials);
+        }
         else if(mesh != NULL) {
-            if ( strcmp( lineHeader, "v" ) == 0 )
+            if ( strcmp( lineHeader, "usemtl" ) == 0 )
+            {
+                char mtl_name[64];
+                fscanf(file, "%s\n", mtl_name);
+
+                QString mtl_string = QString(mtl_name);
+
+                if(m_materials.contains(mtl_string)) {
+                    mesh->setMaterial(m_materials.find(mtl_string).value());
+                }
+            }
+            else if ( strcmp( lineHeader, "v" ) == 0 )
             {
                 float x; float y; float z;
                 fscanf(file, "%f %f %f\n", &x, &y, &z );

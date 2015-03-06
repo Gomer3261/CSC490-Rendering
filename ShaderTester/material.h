@@ -17,17 +17,32 @@ public:
     void beginGL();
     void endGL();
 
+    QString getName();
+
+    void setAmbient(float r, float g, float b);     // Ka r g b
+    void setDiffuse(float r, float g, float b);     // Kd r g b
+    void setSpecular(float r, float g, float b);    // Ks r g b
+    void setShininess(float shininess);             // Ns value (0 - 1)
+    void setShininess(int shininess);               // Ns value (0 - 1000)
+    void setEmission(float r, float g, float b);    // Ke r g b
+    void setDissolve(float d);                      // d disolve depth (0 - 1)
+    void setOpticalDensity(float d);                // Ni optical density (0 - 10)
+    void setIlluminationModel(int model);           // illum (0 - 10)
+
 private:
     Material();
 
-
     unsigned int m_count;
 
+    QString m_name;
     GLfloat m_ambient[4];
     GLfloat m_diffuse[4];
     GLfloat m_specular[4];
     GLfloat m_shininess;
     GLfloat m_emission[4];
+    GLfloat m_dissolve;
+    GLfloat m_optical_density;
+    int m_illumination_model;
 };
 
 class Material::Ptr {

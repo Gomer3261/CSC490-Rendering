@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "material.h"
 #include "renderobject.h"
+#include "objmaterialloader.h"
 
 class ObjLoader
 {

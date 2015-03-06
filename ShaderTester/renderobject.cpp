@@ -32,10 +32,6 @@ void RenderObject::paintGL()
         m_shader->beginGL();
     }
 
-    GLfloat spec[] = {0.0f, 0.0f, 0.0f, 0.0f};
-    glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
-    glMaterialf(GL_FRONT, GL_SHININESS, 0.0f);
-
     m_mesh->draw();
 }
 

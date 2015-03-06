@@ -6,10 +6,9 @@ varying vec2 f_texcoord;
 
 #define PI    3.14159265
 
-float nearPlane = 0.1; //Z-near
-float farPlane = 25.0; //Z-far
+float near_plane = 0.1; //Z-near
+float far_plane = 25.0; //Z-far
 
-bool use_noise = true;
 float noise_multiplier = 0.0005;
 
 float ao_radius = 3.0;
@@ -19,25 +18,22 @@ float gauss_center = 0.4; //gauss bell center
 float gauss_width = 2.0; //gauss bell width
 float gauss_width_reduced = 0.4; // Reduce self shadowing
 
+vec3 luminocity_coeff = vec3(0.299,0.587,0.114);
+float luminocity_influence = 0.7;
+
 int samples = 16;
 
 vec2 rand(vec2 coord) //generating noise/pattern texture for dithering
 {
-  float noise_x = ((fract(1.0-coord.x*(fbo_width/2.0))*0.25)+(fract(coord.y*(fbo_height/2.0))*0.75))*2.0-1.0;
-  float noise_y = ((fract(1.0-coord.x*(fbo_width/2.0))*0.75)+(fract(coord.y*(fbo_height/2.0))*0.25))*2.0-1.0;
-
-  if (use_noise)
-  {
-    noise_x = clamp(fract(sin(dot(coord ,vec2(12.9898,78.233))) * 43758.5453),0.0,1.0)*2.0-1.0;
-    noise_y = clamp(fract(sin(dot(coord ,vec2(12.9898,78.233)*2.0)) * 43758.5453),0.0,1.0)*2.0-1.0;
-  }
-  return vec2(noise_x,noise_y)*noise_multiplier;
+    float noise_x = clamp(fract(sin(dot(coord ,vec2(12.9898,78.233))) * 43758.5453),0.0,1.0)*2.0-1.0;
+    float noise_y = clamp(fract(sin(dot(coord ,vec2(12.9898,78.233)*2.0)) * 43758.5453),0.0,1.0)*2.0-1.0;
+    return vec2(noise_x,noise_y)*noise_multiplier;
 }
 
 float readDepth(in vec2 coord)
 {
     if (coord.x<0||coord.y<0||coord.x>1||coord.y>1) return 1.0;
-    return (2.0 * nearPlane) / (nearPlane + farPlane - texture2D(fbo_depth, coord).x * (farPlane - nearPlane));
+    return (2.0 * near_plane) / (near_plane + far_plane - texture2D(fbo_depth, coord).x * (far_plane - near_plane));
 }
 
 float compareDepths(float depth1, float depth2, inout int far)
@@ -109,7 +105,11 @@ void main(void)
     //final values, some adjusting:
     vec3 final_ao = vec3(1.0-(ao/samples));
 
-    //gl_FragColor = vec4(texture2D(fbo_render, f_texcoord).rgb*final_ao+final_gi, 1.0);
+    // Adjusting color for luminance (Brightness adjusted to the way human eyes percieve it)
+    vec3 color = texture2D(fbo_render,f_texcoord).rgb;
+    vec3 luminance = vec3(dot(color.rgb, luminocity_coeff))*luminocity_influence*luminocity_influence;
+    vec3 final = color*mix(vec3(final_ao), vec3(1.0), luminance);
 
-    gl_FragColor = vec4(vec3(final_ao), 1.0);
+    //gl_FragColor = vec4(final, 1.0);
+    gl_FragColor = vec4(color.rgb*vec3(final_ao), 1.0);
 }

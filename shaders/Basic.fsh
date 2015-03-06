@@ -40,5 +40,5 @@ vec4 lighting( void )
 
 void main()
 {
-    gl_FragColor = vColor * lighting();
+    gl_FragColor = lighting();
 }

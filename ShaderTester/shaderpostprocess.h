@@ -9,29 +9,37 @@
 class ShaderPostProcess
 {   
 public:
-    ShaderPostProcess(int screen_width, int screen_height, QString vshader, QString fshader);
+    ShaderPostProcess(QString vshader, QString fshader, bool draw_depth);
+    ShaderPostProcess(QString vshader, QString fshader, int passes, bool draw_depth);
+    ShaderPostProcess(int screen_width, int screen_height, QString vshader, QString fshader, bool draw_depth);
     void resizeGL(int screen_width, int screen_height);
     GLuint getFrameBuffer();
     void paintGL();
     ~ShaderPostProcess();
 protected:
-    GLuint setupShader(QString vshader, QString fshader);
-    virtual GLuint bindAttributes();
-    virtual void updateAttributes();
+    virtual GLuint bindAttributes(int pass);
+    virtual void updateAttributes(int pass);
 
-    GLuint m_vbo_fbo_vertices;
-    GLuint m_fbo;
+    int m_passes;
+    GLuint *m_fbos;
+    GLuint *m_fbo_textures;
+    GLuint *m_fbo_depths;
     int m_fbo_height;
     int m_fbo_width;
-    GLuint m_fbo_texture;
-    GLuint m_fbo_depth;
+    bool m_draws_depth;
 
-    GLuint m_program_postproc;
-    GLuint m_attribute_v_coord_postproc;
-    GLuint m_uniform_fbo_width;
-    GLuint m_uniform_fbo_height;
-    GLuint m_uniform_fbo_render_texture;
-    GLuint m_uniform_fbo_depth_texture;
+    GLuint m_vbo_fbo_vertices;
+
+    GLuint *m_program_postproc;
+    GLint *m_attribute_v_coord_postproc;
+    GLint *m_uniform_fbo_width;
+    GLint *m_uniform_fbo_height;
+    GLint *m_uniform_fbo_render_texture;
+    GLint *m_uniform_fbo_depth_texture;
+private:
+    void init(QString vshader, QString fshader);
+    void setupFBO(int pass);
+    GLuint setupShaders(QString vshader, QString fshader, int pass);
 };
 
 #endif // POSTPROCESSSHADER_H

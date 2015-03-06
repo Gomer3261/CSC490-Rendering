@@ -17,12 +17,16 @@ MainWindow::MainWindow(QWidget *parent) :
     animationTimer->start(20);
 
     m_shaders.insert("test", new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Basic.fsh"));
-    m_filters.insert("through", new ShaderPostProcess(1, 1, "../../../../filters/Through.vsh", "../../../../filters/Through.fsh"));
-    m_filters.insert("depth", new ShaderPostProcess(1, 1, "../../../../filters/Through.vsh", "../../../../filters/Depth.fsh"));
-    m_filters.insert("depth2", new ShaderPostProcess(1, 1, "../../../../filters/Through.vsh", "../../../../filters/Depth.fsh"));
-    m_filters.insert("ssao", new ShaderPostProcess(1, 1, "../../../../filters/Through.vsh", "../../../../filters/SSAO.fsh"));
-    m_filters.insert("ssao2", new ShaderPostProcess(1, 1, "../../../../filters/Through.vsh", "../../../../filters/SimpleSSAO.fsh"));
-    m_filters.insert("ripple", new ShaderPostProcessRipple(1, 1, "../../../../filters/Through.vsh", "../../../../filters/Ripple.fsh"));
+
+    m_filters.insert("through", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Through.fsh", false));
+    m_filters.insert("depth", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Depth.fsh", false));
+    m_filters.insert("ssao", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/SimpleSSAO.fsh", false));
+    m_filters.insert("ripple", new ShaderPostProcessRipple("../../../../filters/Through.vsh", "../../../../filters/Ripple.fsh", true));
+    m_filters.insert("gaussian", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/GaussianBlur.fsh", 2, false));
+    m_filters.insert("gaussiandof", new ShaderPostProcessFocal("../../../../filters/Through.vsh", "../../../../filters/GaussianDOF.fsh", 2, false));
+    m_filters.insert("bokeh", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/BokehBlur.fsh", false));
+    m_filters.insert("bokehdof", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/BokehDOF.fsh", false));
+    m_filters.insert("bokehdofcpu", new ShaderPostProcessFocal("../../../../filters/Through.vsh", "../../../../filters/BokehDOFCPU.fsh", false));
 }
 
 MainWindow::~MainWindow()
@@ -47,10 +51,14 @@ void MainWindow::openFile()
         ui->objectList->clear();
     }
     m_scene = new Scene();
-    m_scene->addFilter(m_filters["ssao2"]);
-    m_scene->addFilter(m_filters["depth"]);
-    //m_scene->addFilter(m_filters["depth2"]);
+    //m_scene->addFilter(m_filters["depth"]);
+    m_scene->addFilter(m_filters["ssao"]);
     //m_scene->addFilter(m_filters["ripple"]);
+    //m_scene->addFilter(m_filters["gaussian"]);
+    //m_scene->addFilter(m_filters["gaussiandof"]);
+    //m_scene->addFilter(m_filters["bokeh"]);
+    //m_scene->addFilter(m_filters["bokehdof"]);
+    m_scene->addFilter(m_filters["bokehdofcpu"]);
     ui->oglview->setScene(m_scene);
     foreach (QString file, fileNames) {
         QString root;

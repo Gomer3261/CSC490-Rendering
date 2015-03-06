@@ -3,16 +3,16 @@
 Scene::Scene() :
     m_lights(),
     m_objects(),
-    m_filters(),
-    m_screen_width(0),
-    m_screen_height(0)
+    m_filters()
 {
     QMatrix4x4 lightTransform;
     lightTransform.rotate(-90, 1, 0, 0);
     OrbitalLight* light_1 = new OrbitalLight(GL_LIGHT0, lightTransform, 10.0f, 5.0f, 0.01f);
 
-    GLfloat lightSpec[] = {0.4f, 0.4f, 1.0f, 1.0f};
-    GLfloat lightDif[] = {0.2f, 0.2f, 0.7f, 1.0f};
+    //GLfloat lightSpec[] = {0.4f, 0.4f, 1.0f, 1.0f};
+    GLfloat lightSpec[] = {0.6f, 0.6f, 0.6f, 1.0f};
+    GLfloat lightDif[] = {0.6f, 0.6f, 0.9f, 1.0f};
+    //GLfloat lightDif[] = {0.5f, 0.5f, 0.5f, 1.0f};
     GLfloat lightAmb[] = {0.05f, 0.05f, 0.25f, 1.0f};
 
     light_1->initializeGL(lightSpec, lightDif, lightAmb);
@@ -23,8 +23,10 @@ Scene::Scene() :
 
     OrbitalLight* light_2 = new OrbitalLight(GL_LIGHT1, lightTransform, 10.0f, 5.0f, 0.01f);
 
-    GLfloat lightSpec_2[] = {1.0f, 0.8f, 0.0f, 1.0f};
-    GLfloat lightDif_2[] = {0.7f, 0.5f, 0.0f, 1.0f};
+    //GLfloat lightSpec_2[] = {1.0f, 0.8f, 0.0f, 1.0f};
+    GLfloat lightSpec_2[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat lightDif_2[] = {0.95f, 0.8f, 0.75f, 1.0f};
+    //GLfloat lightDif_2[] = {0.7f, 0.7f, 0.7f, 1.0f};
     GLfloat lightAmb_2[] = {0.25f, 0.20f, 0.0f, 1.0f};
 
     light_2->initializeGL(lightSpec_2, lightDif_2, lightAmb_2);
@@ -64,8 +66,6 @@ void Scene::initializeGL()
 }
 
 void Scene::resizeGL(int width, int height) {
-    m_screen_width = width;
-    m_screen_height = height;
     for(ShaderPostProcess* filter : m_filters) {
         filter->resizeGL(width, height);
     }
@@ -113,7 +113,6 @@ void Scene::paintGL()
             glDisable(GL_LIGHTING);
         } else {
             m_filters[render_pass-1]->paintGL();
-            glBlitFramebuffer(0, 0, m_screen_width, m_screen_height, 0, 0, m_screen_width, m_screen_height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
         }
     }
 

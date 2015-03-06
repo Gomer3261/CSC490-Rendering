@@ -8,13 +8,17 @@
 class ShaderPostProcessRipple : public ShaderPostProcess
 {
 public:
-    ShaderPostProcessRipple(int screen_width, int screen_height, QString vshader, QString fshader);
+    ShaderPostProcessRipple(QString vshader, QString fshader, bool draw_depth);
+    ShaderPostProcessRipple(QString vshader, QString fshader, int passes, bool draw_depth);
+    ShaderPostProcessRipple(int screen_width, int screen_height, QString vshader, QString fshader, bool draw_depth);
 protected:
-    GLuint bindAttributes();
-    void updateAttributes();
+    GLuint bindAttributes(int pass);
+    void updateAttributes(int pass);
 
     QElapsedTimer m_timer;
-    GLuint m_uniform_offset;
+    GLint *m_uniform_offset;
+private:
+    void init();
 };
 
 #endif // SHADERPOSTPROCESSRIPPLE_H
