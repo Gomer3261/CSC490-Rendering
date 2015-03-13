@@ -110,6 +110,7 @@ void main(void)
     vec3 luminance = vec3(dot(color.rgb, luminocity_coeff))*luminocity_influence*luminocity_influence;
     vec3 final = color*mix(vec3(final_ao), vec3(1.0), luminance);
 
-    //gl_FragColor = vec4(final, 1.0);
-    gl_FragColor = vec4(color.rgb*vec3(final_ao), 1.0);
+    //gl_FragColor = vec4(vec3(final_ao), 1.0);
+    gl_FragColor = vec4(final, 1.0);
+    //gl_FragColor = vec4(color.rgb*vec3(final_ao), 1.0);
 }

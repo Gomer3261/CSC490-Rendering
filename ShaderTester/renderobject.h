@@ -12,14 +12,11 @@ public:
 
     QString getName();
 
-    void setShader(Shader* shader);
     void initializeGL();
     void paintGL();
 private:
     QString m_name;
     Mesh* m_mesh;
-    Shader* m_shader;
-    //TODO Materials
 };
 
 #endif // OBJECT_H

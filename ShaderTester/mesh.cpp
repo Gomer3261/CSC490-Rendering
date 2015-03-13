@@ -138,6 +138,7 @@ void Mesh::generateVBO(float* vertices, float* uvs, float* normals) {
 void Mesh::draw()
 {
     m_material->beginGL();
+    ShaderManager::getInstance().setShader(m_material->getIlluminationModel());
 
     if(m_vertexBuffer != 0) {
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);

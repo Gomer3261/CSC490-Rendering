@@ -1,7 +1,12 @@
 varying vec4 vColor;
 varying vec3 vNormal;
 varying vec3 vPosition;
+
 uniform int lCount;
+uniform int ambient_on;
+uniform int diffuse_on;
+uniform int specular_on;
+uniform int emission_on;
 
 vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
 {
@@ -17,10 +22,10 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
 
         // 'real' shading
         return
-                gl_FrontMaterial.emission +
-                (gl_FrontMaterial.ambient  * light.ambient) +
-                (gl_FrontMaterial.diffuse  * light.diffuse  * Idiff) +
-                (gl_FrontMaterial.specular * light.specular * Ispec);
+                gl_FrontMaterial.emission * emission_on +
+                (gl_FrontMaterial.ambient * light.ambient * ambient_on) +
+                (gl_FrontMaterial.diffuse  * light.diffuse * Idiff * diffuse_on) +
+                (gl_FrontMaterial.specular * light.specular * Ispec * specular_on);
 }
 
 vec4 lighting( void )

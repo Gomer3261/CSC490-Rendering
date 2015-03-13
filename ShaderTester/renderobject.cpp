@@ -2,8 +2,7 @@
 
 RenderObject::RenderObject(QString name, Mesh* mesh) :
     m_name(name),
-    m_mesh(mesh),
-    m_shader(NULL)
+    m_mesh(mesh)
 {
 
 }
@@ -17,10 +16,6 @@ QString RenderObject::getName() {
     return m_name;
 }
 
-void RenderObject::setShader(Shader* shader) {
-    m_shader = shader;
-}
-
 void RenderObject::initializeGL()
 {
 
@@ -28,10 +23,6 @@ void RenderObject::initializeGL()
 
 void RenderObject::paintGL()
 {
-    if(m_shader != NULL) {
-        m_shader->beginGL();
-    }
-
     m_mesh->draw();
 }
 

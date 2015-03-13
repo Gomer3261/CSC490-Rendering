@@ -33,7 +33,6 @@ private:
 
     Scene* m_scene;
     QMap<QString, RenderObject*> m_objects;
-    QMap<QString, Shader*> m_shaders;
     QMap<QString, ShaderPostProcess*> m_filters;
 
     QListWidgetItem *m_selected;

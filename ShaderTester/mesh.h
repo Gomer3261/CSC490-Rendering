@@ -9,6 +9,7 @@
 #include <QDebug>
 
 #include "material.h"
+#include "shadermanager.h"
 
 class Mesh
 {

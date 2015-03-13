@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_scene(NULL),
     m_objects(),
-    m_shaders(),
     m_filters(),
     m_selected(NULL)
 {
@@ -15,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(drawOpenGL()));
     animationTimer->start(20);
-
-    m_shaders.insert("test", new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Basic.fsh"));
 
     m_filters.insert("through", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Through.fsh", false));
     m_filters.insert("depth", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Depth.fsh", false));
@@ -73,7 +70,6 @@ void MainWindow::openFile()
         ObjLoader loader = ObjLoader(file, root);
         while(loader.hasObject()) {
             RenderObject* object = loader.popObject();
-            object->setShader(m_shaders["test"]);
             m_objects.insert(object->getName(), object);
             m_scene->addObject(object);
             ui->objectList->addItem(object->getName());

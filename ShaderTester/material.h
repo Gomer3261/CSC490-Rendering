@@ -28,6 +28,7 @@ public:
     void setDissolve(float d);                      // d disolve depth (0 - 1)
     void setOpticalDensity(float d);                // Ni optical density (0 - 10)
     void setIlluminationModel(int model);           // illum (0 - 10)
+    int getIlluminationModel() { return m_illumination_model; }
 
 private:
     Material();
