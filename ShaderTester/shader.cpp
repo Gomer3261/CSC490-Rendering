@@ -9,12 +9,18 @@ Shader::Shader(QString vshader, QString fshader) :
     m_uniform_specular(0),
     m_uniform_emission(0)
 {
-    loadShader(vshader, fshader);
+    init(vshader, fshader);
 }
 
 Shader::~Shader()
 {
     glDeleteProgram(m_program);
+}
+
+void Shader::init(QString vshader, QString fshader)
+{
+    m_program = ShaderLoader::loadProgram(vshader, fshader);
+    bindAttributes();
 }
 
 void Shader::beginGL()
@@ -58,11 +64,5 @@ void Shader::updateAttributes()
     glUniform1i(m_uniform_diffuse, (m_lighting_flags & USE_DIFFUSE) > 0);
     glUniform1i(m_uniform_specular, (m_lighting_flags & USE_SPECULAR) > 0);
     glUniform1i(m_uniform_emission, (m_lighting_flags & USE_EMISSION) > 0);
-}
-
-void Shader::loadShader(QString vshader, QString fshader)
-{
-    m_program = ShaderLoader::loadProgram(vshader, fshader);
-    bindAttributes();
 }
 

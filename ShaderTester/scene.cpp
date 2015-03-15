@@ -13,7 +13,7 @@ Scene::Scene() :
     GLfloat lightSpec[] = {0.6f, 0.6f, 0.6f, 1.0f};
     GLfloat lightDif[] = {0.6f, 0.6f, 0.9f, 1.0f};
     //GLfloat lightDif[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    GLfloat lightAmb[] = {0.05f, 0.05f, 0.25f, 1.0f};
+    GLfloat lightAmb[] = {0.005f, 0.005f, 0.025f, 1.0f};
 
     light_1->initializeGL(lightSpec, lightDif, lightAmb);
 
@@ -27,7 +27,7 @@ Scene::Scene() :
     GLfloat lightSpec_2[] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat lightDif_2[] = {0.95f, 0.8f, 0.75f, 1.0f};
     //GLfloat lightDif_2[] = {0.7f, 0.7f, 0.7f, 1.0f};
-    GLfloat lightAmb_2[] = {0.25f, 0.20f, 0.0f, 1.0f};
+    GLfloat lightAmb_2[] = {0.025f, 0.020f, 0.00f, 1.0f};
 
     light_2->initializeGL(lightSpec_2, lightDif_2, lightAmb_2);
 

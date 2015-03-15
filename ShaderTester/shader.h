@@ -15,11 +15,10 @@
 class Shader
 {
 public:
-
-
     Shader(QString vshader, QString fshader);
     virtual ~Shader();
     void beginGL();
+    virtual void resizeGL(int screen_width, int screen_height) {(void)screen_width; (void)screen_height;}
     void setLightingFlags(int flags) { m_lighting_flags = flags; }
 protected:
     GLuint m_program;
@@ -32,7 +31,7 @@ protected:
     GLint m_uniform_specular;
     GLint m_uniform_emission;
 
-    void loadShader(QString vshader, QString fshader);
+    void init(QString vshader, QString fshader);
     virtual void bindAttributes();
     virtual void updateAttributes();
 };

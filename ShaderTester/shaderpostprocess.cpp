@@ -129,10 +129,10 @@ void ShaderPostProcess::setupFBO(int pass)
 ShaderPostProcess::~ShaderPostProcess()
 {
     int i;
+    glDeleteTextures(m_passes, m_fbo_textures);
+    glDeleteTextures(m_passes, m_fbo_depths);
+    glDeleteFramebuffers(m_passes, m_fbos);
     for(i=0; i<m_passes; i++) {
-        glDeleteTextures(1, &m_fbo_textures[i]);
-        glDeleteTextures(1, &m_fbo_depths[i]);
-        glDeleteFramebuffers(1, &m_fbos[i]);
         glDeleteProgram(m_program_postproc[i]);
     }
     glDeleteBuffers(1, &m_vbo_fbo_vertices);

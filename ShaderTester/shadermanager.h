@@ -2,6 +2,7 @@
 #define SHADERMANAGER_H
 
 #include "shader.h"
+#include "shadersimplesss.h"
 
 class ShaderManager
 {
@@ -13,6 +14,7 @@ private:
     ShaderManager& operator=(ShaderManager const& copy); // Not Implemented
 
     Shader *m_basic_shader;
+    ShaderSimpleSSS *m_simple_sss_shader;
 public:
     static ShaderManager& getInstance()
     {
