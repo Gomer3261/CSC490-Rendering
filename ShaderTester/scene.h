@@ -4,6 +4,7 @@
 #include "light.h"
 #include "orbitallight.h"
 #include "renderobject.h"
+#include "shadermanager.h"
 #include "shaderpostprocess.h"
 
 #include <QElapsedTimer>

@@ -138,26 +138,31 @@ void Mesh::generateVBO(float* vertices, float* uvs, float* normals) {
 void Mesh::draw()
 {
     m_material->beginGL();
-    ShaderManager::getInstance().setShader(m_material->getIlluminationModel());
+    Shader* mat_shader = ShaderManager::getInstance().getShader(m_material->getIlluminationModel());
 
     if(m_vertexBuffer != 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+        for(int i=0; i<mat_shader->passCount(); i++) {
+            mat_shader->beginGL(i);
 
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glEnableClientState(GL_VERTEX_ARRAY);
+            glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
 
-        glNormalPointer(GL_FLOAT, 0, (void*)(5*m_vertexCount*sizeof(float)) );
-        glTexCoordPointer(2, GL_FLOAT, 0, (void*)(3*m_vertexCount*sizeof(float)) );
-        glVertexPointer(3, GL_FLOAT, 0, 0);
+            glEnableClientState(GL_NORMAL_ARRAY);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glEnableClientState(GL_VERTEX_ARRAY);
 
-        glDrawArrays(GL_TRIANGLES, 0, m_vertexCount);
+            glNormalPointer(GL_FLOAT, 0, (void*)(5*m_vertexCount*sizeof(float)) );
+            glTexCoordPointer(2, GL_FLOAT, 0, (void*)(3*m_vertexCount*sizeof(float)) );
+            glVertexPointer(3, GL_FLOAT, 0, 0);
 
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
+            glDrawArrays(GL_TRIANGLES, 0, m_vertexCount);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDisableClientState(GL_VERTEX_ARRAY);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            glDisableClientState(GL_NORMAL_ARRAY);
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
+        mat_shader->endGL();
     }
 
     m_material->endGL();

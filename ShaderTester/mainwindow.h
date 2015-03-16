@@ -10,6 +10,7 @@
 #include "scene.h"
 #include "shaderpostprocessfocal.h"
 #include "shaderpostprocessripple.h"
+#include "shaderpostprocessglow.h"
 
 namespace Ui {
 class MainWindow;

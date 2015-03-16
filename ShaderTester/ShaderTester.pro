@@ -29,7 +29,7 @@ SOURCES += main.cpp\
     objmaterialloader.cpp \
     shadermanager.cpp \
     shadersimplesss.cpp \
-    shadertextureoutput.cpp
+    shaderpostprocessglow.cpp
 
 HEADERS  += mainwindow.h \
     openglview.h \
@@ -48,6 +48,6 @@ HEADERS  += mainwindow.h \
     objmaterialloader.h \
     shadermanager.h \
     shadersimplesss.h \
-    shadertextureoutput.h
+    shaderpostprocessglow.h
 
 FORMS    += mainwindow.ui

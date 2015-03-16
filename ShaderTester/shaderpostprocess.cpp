@@ -228,8 +228,6 @@ GLuint ShaderPostProcess::getFrameBuffer()
 
 void ShaderPostProcess::paintGL()
 {
-    // TODO: somehow load multi pass shaders.
-
     GLint result_fbo;
     glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &result_fbo);
     for(int i=1; i<=m_passes; i++) {

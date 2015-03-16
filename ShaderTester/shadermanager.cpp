@@ -2,40 +2,52 @@
 
 ShaderManager::ShaderManager() :
     m_basic_shader(new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Basic.fsh")),
-    m_simple_sss_shader(new ShaderSimpleSSS("../../../../shaders/SSS.vsh", "../../../../shaders/SSS.fsh"))
+    m_simple_sss_shader(new ShaderSimpleSSS("../../../../shaders/Basic.vsh", "../../../../shaders/SSS.fsh"))
 {
 }
 
 ShaderManager::~ShaderManager()
 {
     delete m_basic_shader;
+    delete m_simple_sss_shader;
 }
 
-int ShaderManager::setShader(int illumination_model)
+Shader* ShaderManager::getShader(int illumination_model)
 {
     switch(illumination_model)
     {
     case 4:
-        m_simple_sss_shader->beginGL();
-        break;
+        m_simple_sss_shader->setLightingFlags(USE_BASIC_LIGHTING);
+        return m_simple_sss_shader;
     case 3: // Ambient, Diffuse, Specular, Emission
         m_basic_shader->setLightingFlags(USE_BASIC_LIGHTING | USE_EMISSION);
-        m_basic_shader->beginGL();
-        break;
+        return m_basic_shader;
     case 2: // Ambient, Diffuse, Specular
         m_basic_shader->setLightingFlags(USE_BASIC_LIGHTING);
-        m_basic_shader->beginGL();
-        break;
+        return m_basic_shader;
     case 1: // Ambient, Diffuse
         m_basic_shader->setLightingFlags(USE_AMBIENT | USE_DIFFUSE);
-        m_basic_shader->beginGL();
-        break;
+        return m_basic_shader;
     case 0: // Diffuse
     default:
         m_basic_shader->setLightingFlags(USE_DIFFUSE);
-        m_basic_shader->beginGL();
-        break;
+        return m_basic_shader;
     }
-    return 1;
+}
+
+void ShaderManager::initializeGL()
+{
+    m_basic_shader->initializeGL();
+    m_simple_sss_shader->initializeGL();
+}
+
+void ShaderManager::resizeGL(int screen_width, int screen_height)
+{
+    m_basic_shader->resizeGL(screen_width, screen_height);
+    m_simple_sss_shader->resizeGL(screen_width, screen_height);
+}
+
+GLuint ShaderManager::getGlowTexture() {
+    return m_basic_shader->getEmissionTexture();
 }
 

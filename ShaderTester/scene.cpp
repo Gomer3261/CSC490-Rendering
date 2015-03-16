@@ -66,15 +66,18 @@ void Scene::initializeGL()
 }
 
 void Scene::resizeGL(int width, int height) {
-    for(ShaderPostProcess* filter : m_filters) {
-        filter->resizeGL(width, height);
+    for(int i=0; i<m_filters.length(); i++) {
+        m_filters[i]->resizeGL(width, height);
     }
+    ShaderManager::getInstance().resizeGL(width, height);
 }
 
 void Scene::paintGL()
 {
     QElapsedTimer timer;
     timer.start();
+
+    ShaderManager::getInstance().initializeGL();
 
     for(int render_pass=0; render_pass<m_filters.length()+1; render_pass++)
     {

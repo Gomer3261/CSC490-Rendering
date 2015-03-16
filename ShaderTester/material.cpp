@@ -109,7 +109,7 @@ void Material::setEmission(float r, float g, float b) {
     m_emission[0] = r;
     m_emission[1] = g;
     m_emission[2] = b;
-    m_emission[3] = 0.0f;
+    m_emission[3] = 1.0f;
 }
 
 void Material::setDissolve(float d) {

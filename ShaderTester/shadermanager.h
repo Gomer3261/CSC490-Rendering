@@ -27,7 +27,12 @@ public:
 
     ~ShaderManager();
 
-    int setShader(int illumination_model);
+    Shader* getShader(int illumination_model);
+    void initializeGL();
+    void resizeGL(int screen_width, int screen_height);
+
+    // Shader data accessors.
+    GLuint getGlowTexture();
 };
 
 #endif // SHADERMANAGER_H

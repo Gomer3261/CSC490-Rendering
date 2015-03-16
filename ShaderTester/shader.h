@@ -16,24 +16,41 @@ class Shader
 {
 public:
     Shader(QString vshader, QString fshader);
+    Shader(QString vshader, QString fshader, int passes);
     virtual ~Shader();
-    void beginGL();
-    virtual void resizeGL(int screen_width, int screen_height) {(void)screen_width; (void)screen_height;}
+    virtual void initializeGL();
+    virtual void beginGL(int pass);
+    virtual void endGL();
+    virtual void resizeGL(int screen_width, int screen_height);
     void setLightingFlags(int flags) { m_lighting_flags = flags; }
-protected:
-    GLuint m_program;
+    int passCount() {return m_passes;}
 
+    GLuint getEmissionTexture();
+    GLuint getEmissionDepth();
+protected:
+    GLint m_default_fbo;
     int m_lighting_flags;
 
-    GLint m_uniform_lcount;
-    GLint m_uniform_ambient;
-    GLint m_uniform_diffuse;
-    GLint m_uniform_specular;
-    GLint m_uniform_emission;
+    int m_passes;
+
+    int m_screen_width;
+    int m_screen_height;
+
+    static GLuint m_emission_texture;
+    static GLuint m_emission_depth;
+    static GLuint m_emission_fbo;
+
+    GLuint *m_programs;
+
+    GLint *m_uniform_lcount;
+    GLint *m_uniform_ambient;
+    GLint *m_uniform_diffuse;
+    GLint *m_uniform_specular;
+    GLint *m_uniform_emission;
 
     void init(QString vshader, QString fshader);
-    virtual void bindAttributes();
-    virtual void updateAttributes();
+    virtual void bindAttributes(int pass);
+    virtual void updateAttributes(int pass);
 };
 
 #endif // SHADER_H

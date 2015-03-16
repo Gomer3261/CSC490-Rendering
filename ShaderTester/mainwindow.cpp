@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_filters.insert("bokeh", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/BokehBlur.fsh", false));
     m_filters.insert("bokehdof", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/BokehDOF.fsh", false));
     m_filters.insert("bokehdofcpu", new ShaderPostProcessFocal("../../../../filters/Through.vsh", "../../../../filters/BokehDOFCPU.fsh", false));
+    m_filters.insert("glow", new ShaderPostProcessGlow("../../../../filters/Through.vsh", "../../../../filters/Glow.fsh", false));
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +51,7 @@ void MainWindow::openFile()
     m_scene = new Scene();
     //m_scene->addFilter(m_filters["depth"]);
     m_scene->addFilter(m_filters["ssao"]);
+    m_scene->addFilter(m_filters["glow"]);
     //m_scene->addFilter(m_filters["ripple"]);
     //m_scene->addFilter(m_filters["gaussian"]);
     //m_scene->addFilter(m_filters["gaussiandof"]);

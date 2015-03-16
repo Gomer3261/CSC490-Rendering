@@ -12,13 +12,13 @@ protected:
     float m_thickness;
     float m_rim_multiplier;
 
-    GLint m_uniform_thickness;
-    GLint m_uniform_exctinction_coefficient;
-    GLint m_uniform_rim_multiplier;
+    GLint *m_uniform_thickness;
+    GLint *m_uniform_exctinction_coefficient;
+    GLint *m_uniform_rim_multiplier;
 
     void init();
-    void bindAttributes();
-    void updateAttributes();
+    void bindAttributes(int pass);
+    void updateAttributes(int pass);
 };
 
 #endif // SHADERSIMPLESSS_H
