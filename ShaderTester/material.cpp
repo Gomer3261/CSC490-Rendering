@@ -59,6 +59,16 @@ void Material::beginGL()
     //no need to use it.
     //glEnable(GL_COLOR_MATERIAL);
 
+    /*GLfloat ambient_empty[4] = {0.1f, 0.1f, 0.1f, 1.0f};
+    GLfloat diffuse_empty[4] = {0.6f, 0.6f, 0.6f, 1.0f};
+    GLfloat specular_empty[4] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat emission_empty[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_empty);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_empty);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_empty);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 1);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission_empty);*/
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_diffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_specular);

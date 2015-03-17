@@ -46,6 +46,6 @@ void ShaderSimpleSSS::updateAttributes(int pass)
     Shader::updateAttributes(pass);
 
     glUniform1f(m_uniform_thickness[pass], m_thickness);
-    glUniform3f(m_uniform_exctinction_coefficient[pass], 0.3f, 0.2f, 0.4f);
+    glUniform3f(m_uniform_exctinction_coefficient[pass], 0.6f, 0.4f, 0.8f);
     glUniform1f(m_uniform_rim_multiplier[pass], m_rim_multiplier);
 }
