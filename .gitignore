@@ -36,4 +36,5 @@ Makefile*
 *.DS_Store
 
 #Builds
+build-ShaderTester-Desktop_Qt_5_4_0_clang_64bit-Release/*
 build-ShaderTester-Desktop_Qt_5_4_0_clang_64bit-Debug/*

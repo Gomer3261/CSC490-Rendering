@@ -8,8 +8,8 @@ varying vec2 f_texcoord;
 
 vec2 texture_pixel = vec2(1.0/fbo_width,1.0/fbo_height); // Texel
 
-int samples = 3; //samples grow exponentially per ring (3*5^n)
-int rings = 5; //ring count
+int samples = 4; //samples grow exponentially per ring (3*5^n)
+int rings = 10; //ring count
 
 float threshold = 0.4; //highlight threshold;
 float gain = 8.0; //highlight gain;
@@ -17,7 +17,7 @@ float gain = 8.0; //highlight gain;
 float bias = 0.7; //bokeh edge bias
 float fringe = 0.7; //bokeh chromatic aberration/fringing
 
-float blur = 1.0;
+float blur = 5.0;
 vec3 luminocity_coeff = vec3(0.299,0.587,0.114);
 
 float noise_multiplier = 0.00001;

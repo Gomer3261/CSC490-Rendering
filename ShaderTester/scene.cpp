@@ -63,6 +63,14 @@ void Scene::initializeGL()
     for(int i=0; i<m_objects.size(); i++) {
         m_objects[i]->initializeGL();
     }
+
+    // Need to attach our emission image to the first frame buffer, which is not known before runtime!
+    glBindFramebuffer(GL_FRAMEBUFFER, m_filters[0]->getFrameBuffer());
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, ShaderManager::getInstance().getGlowTexture(), 0);
+    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
+                            GL_COLOR_ATTACHMENT1};
+    glDrawBuffers(2,drawBuffers);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Scene::resizeGL(int width, int height) {
@@ -81,6 +89,7 @@ void Scene::paintGL()
 
     for(int render_pass=0; render_pass<m_filters.length()+1; render_pass++)
     {
+        // Set correct frame buffer to render to.
         if(render_pass < m_filters.length())
         {
             glBindFramebuffer(GL_FRAMEBUFFER, m_filters[render_pass]->getFrameBuffer());
@@ -90,12 +99,30 @@ void Scene::paintGL()
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
+        /*// Ensure correct read buffer is in place. This should be automatic?
         if( render_pass > 0 ) {
             glBindFramebuffer(GL_READ_FRAMEBUFFER, m_filters[render_pass-1]->getFrameBuffer());
+        }*/
+
+        // Clear buffers correctly. This deals with the special emissions case.
+        // Couldn't get https://www.opengl.org/wiki/GLAPI/glClearBuffer to work...
+        if(render_pass == 0) {
+            GLenum bufferOne[] = {GL_COLOR_ATTACHMENT0};
+            glDrawBuffers(1, bufferOne);
+            glClearColor(1.0, 1.0, 1.0, 1.0);
+            GLenum bufferTwo[] = {GL_COLOR_ATTACHMENT1};
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glDrawBuffers(1, bufferTwo);
+            glClearColor(0.0, 0.0, 0.0, 1.0);
+            glClear(GL_COLOR_BUFFER_BIT);
+            GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
+                                    GL_COLOR_ATTACHMENT1};
+            glDrawBuffers(2,drawBuffers);
+        } else {
+            glClearColor(1.0, 1.0, 1.0, 1.0);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
-        glClearColor(1.0, 1.0, 1.0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if(render_pass == 0) {
             for(int i=0; i<m_lights.length(); i++) {
                 m_lights[i]->paintGL();

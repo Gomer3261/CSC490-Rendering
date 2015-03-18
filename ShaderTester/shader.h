@@ -18,9 +18,9 @@ public:
     Shader(QString vshader, QString fshader);
     Shader(QString vshader, QString fshader, int passes);
     virtual ~Shader();
-    virtual void initializeGL();
+    virtual void initializeGL() {}
     virtual void beginGL(int pass);
-    virtual void endGL();
+    virtual void endGL() {}
     virtual void resizeGL(int screen_width, int screen_height);
     void setLightingFlags(int flags) { m_lighting_flags = flags; }
     int passCount() {return m_passes;}
@@ -28,7 +28,6 @@ public:
     GLuint getEmissionTexture();
     GLuint getEmissionDepth();
 protected:
-    GLint m_default_fbo;
     int m_lighting_flags;
 
     int m_passes;
@@ -37,8 +36,6 @@ protected:
     int m_screen_height;
 
     static GLuint m_emission_texture;
-    static GLuint m_emission_depth;
-    static GLuint m_emission_fbo;
 
     GLuint *m_programs;
 

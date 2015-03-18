@@ -50,14 +50,14 @@ void MainWindow::openFile()
     }
     m_scene = new Scene();
     //m_scene->addFilter(m_filters["depth"]);
-    m_scene->addFilter(m_filters["ssao"]);
+    //m_scene->addFilter(m_filters["ssao"]);
     m_scene->addFilter(m_filters["glow"]);
     //m_scene->addFilter(m_filters["ripple"]);
     //m_scene->addFilter(m_filters["gaussian"]);
     //m_scene->addFilter(m_filters["gaussiandof"]);
     //m_scene->addFilter(m_filters["bokeh"]);
     //m_scene->addFilter(m_filters["bokehdof"]);
-    m_scene->addFilter(m_filters["bokehdofcpu"]);
+    //m_scene->addFilter(m_filters["bokehdofcpu"]);
     ui->oglview->setScene(m_scene);
     foreach (QString file, fileNames) {
         QString root;
@@ -77,4 +77,5 @@ void MainWindow::openFile()
             ui->objectList->addItem(object->getName());
         }
     }
+    m_scene->initializeGL();
 }

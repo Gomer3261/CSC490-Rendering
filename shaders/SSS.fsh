@@ -39,7 +39,7 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
                 (gl_FrontMaterial.ambient * light.ambient * ambient_on) +
                 (gl_FrontMaterial.diffuse * light.diffuse * Idiff * diffuse_on) +
                 (gl_FrontMaterial.diffuse * Iback * light.diffuse * attenuation * vec4(exctinction_coefficient, 1.0)) +
-                (gl_FrontMaterial.diffuse * Iedge * rim_multiplier * light.specular) +
+                (gl_FrontMaterial.diffuse * Iedge * rim_multiplier * light.specular * vec4(exctinction_coefficient, 1.0)) +
                 (gl_FrontMaterial.specular * light.specular * Ispec * specular_on);
 }
 
@@ -60,5 +60,6 @@ vec4 lighting( void )
 
 void main()
 {
-    gl_FragColor = lighting();
+    gl_FragData[0] = lighting();
+    gl_FragData[1] = (gl_FrontMaterial.emission + gl_FrontMaterial.diffuse) * emission_on;
 }
