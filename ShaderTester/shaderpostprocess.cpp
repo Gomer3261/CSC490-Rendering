@@ -216,7 +216,7 @@ void ShaderPostProcess::resizeGL(int screen_width, int screen_height)
         glBindTexture(GL_TEXTURE_2D, 0);
 
         glBindTexture(GL_TEXTURE_2D, m_fbo_depths[i]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, screen_width, screen_height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, screen_width, screen_height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

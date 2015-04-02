@@ -20,7 +20,7 @@ public:
     virtual ~Shader();
     virtual void initializeGL() {}
     virtual void beginGL(int pass);
-    virtual void endGL() {}
+    virtual void endGL(int pass) { (void)pass; }
     virtual void resizeGL(int screen_width, int screen_height);
     void setLightingFlags(int flags) { m_lighting_flags = flags; }
     int passCount() {return m_passes;}

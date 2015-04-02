@@ -13,7 +13,9 @@ ShaderSimpleSSS::ShaderSimpleSSS(QString vshader, QString fshader) :
 
 ShaderSimpleSSS::~ShaderSimpleSSS()
 {
-
+    delete m_uniform_thickness;
+    delete m_uniform_exctinction_coefficient;
+    delete m_uniform_rim_multiplier;
 }
 
 void ShaderSimpleSSS::init()

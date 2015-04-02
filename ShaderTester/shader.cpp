@@ -22,6 +22,8 @@ Shader::Shader(QString vshader, QString fshader) :
 Shader::Shader(QString vshader, QString fshader, int passes) :
     m_lighting_flags(USE_BASIC_LIGHTING),
     m_passes(passes),
+    m_screen_width(256),
+    m_screen_height(256),
     m_programs(new GLuint[passes]),
     m_uniform_lcount(new GLint[passes]),
     m_uniform_ambient(new GLint[passes]),

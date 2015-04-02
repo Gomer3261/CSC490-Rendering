@@ -41,6 +41,7 @@ void OpenGLView::updateCameraAngle() {
 void OpenGLView::initializeGL()
 {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_CULL_FACE);
 }
 
 void OpenGLView::paintGL()

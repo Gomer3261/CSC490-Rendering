@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     animationTimer->start(20);
 
     m_filters.insert("through", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Through.fsh", false));
+    m_filters.insert("sssdebug", new ShaderPostProcessSSSDebug("../../../../filters/Through.vsh", "../../../../filters/SSSDebug.fsh", false));
     m_filters.insert("depth", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Depth.fsh", false));
     m_filters.insert("ssao", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/SimpleSSAO.fsh", false));
     m_filters.insert("ripple", new ShaderPostProcessRipple("../../../../filters/Through.vsh", "../../../../filters/Ripple.fsh", true));
@@ -58,6 +59,7 @@ void MainWindow::openFile()
     //m_scene->addFilter(m_filters["bokeh"]);
     //m_scene->addFilter(m_filters["bokehdof"]);
     //m_scene->addFilter(m_filters["bokehdofcpu"]);
+    //m_scene->addFilter(m_filters["sssdebug"]);
     ui->oglview->setScene(m_scene);
     foreach (QString file, fileNames) {
         QString root;

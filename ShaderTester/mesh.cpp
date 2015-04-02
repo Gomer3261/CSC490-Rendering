@@ -161,8 +161,9 @@ void Mesh::draw()
             glDisableClientState(GL_NORMAL_ARRAY);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            mat_shader->endGL(i);
         }
-        mat_shader->endGL();
     }
 
     m_material->endGL();

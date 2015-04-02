@@ -11,6 +11,7 @@
 #include "shaderpostprocessfocal.h"
 #include "shaderpostprocessripple.h"
 #include "shaderpostprocessglow.h"
+#include "shaderpostprocesssssdebug.h"
 
 namespace Ui {
 class MainWindow;
