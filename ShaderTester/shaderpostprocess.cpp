@@ -232,9 +232,9 @@ void ShaderPostProcess::paintGL()
     glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &result_fbo);
     for(int i=1; i<=m_passes; i++) {
         if(i == m_passes) {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, result_fbo);
+            glBindFramebuffer(GL_FRAMEBUFFER, result_fbo);
         } else {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbos[i]);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_fbos[i]);
         }
 
         glClearColor(0.0, 0.0, 0.0, 1.0);

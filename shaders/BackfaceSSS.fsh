@@ -21,7 +21,7 @@ float thickness = 0;
 float nearPlane = 0.1f;
 float farPlane = 25.0f;
 
-vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
+vec4 lightSource( vec3 normal, vec3 back_normal, vec3 position, gl_LightSourceParameters light )
 {
     float attenuation = 1.0 - distance(light.position.xyz, position)/farPlane;
     vec3 direction = normalize(light.position.xyz - position);
@@ -29,7 +29,7 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
     vec3 reflection = normalize(-reflect(direction, normal));
 
     float NdotL = max(0.0, dot(normal, direction));
-    float HLINdotL = 0.5 + dot(-normal,direction)*0.5;
+    float HLINdotL = 0.5 + dot(back_normal,direction)*0.5;
     float NdotH = max(0.0, dot(reflection, eye));
 
     float Idiff = NdotL;
@@ -55,12 +55,13 @@ vec4 lighting( void )
 {
     // normal might be damaged by linear interpolation.
     vec3 normal = normalize( vNormal );
+    vec3 back_normal = normalize( texture2D(backface_texture, vec2((vView.x+1.0)/2.0, (vView.y+1.0)/2.0)).xyz );
 
     vec4 lighting = vec4(0.0, 0.0, 0.0, 0.0);
 
     for(int i = 0; i<lCount; i++)
     {
-        lighting += lightSource( normal, vPosition, gl_LightSource[i] );
+        lighting += lightSource( normal, back_normal, vPosition, gl_LightSource[i] );
     }
 
     return lighting;
