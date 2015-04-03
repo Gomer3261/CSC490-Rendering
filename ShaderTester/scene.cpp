@@ -99,10 +99,10 @@ void Scene::paintGL()
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        /*// Ensure correct read buffer is in place. This should be automatic?
+        // Ensure correct read buffer is in place. This should be automatic?
         if( render_pass > 0 ) {
             glBindFramebuffer(GL_READ_FRAMEBUFFER, m_filters[render_pass-1]->getFrameBuffer());
-        }*/
+        }
 
         // Clear buffers correctly. This deals with the special emissions case.
         // Couldn't get https://www.opengl.org/wiki/GLAPI/glClearBuffer to work...
