@@ -35,6 +35,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -48,6 +51,40 @@
         <property name="text">
          <string>Load</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="shaderList">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::InternalMove</enum>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>Hello</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chicken</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bacon</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
