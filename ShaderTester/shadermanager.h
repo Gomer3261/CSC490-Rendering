@@ -36,6 +36,7 @@ public:
     // Shader data accessors.
     GLuint getGlowTexture();
     GLuint getBackfaceTexture();
+    GLuint getBackfaceDepth();
 };
 
 #endif // SHADERMANAGER_H

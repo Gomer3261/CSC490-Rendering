@@ -61,3 +61,7 @@ GLuint ShaderManager::getBackfaceTexture() {
     return m_multipass_sss_shader->getBackfaceTexture();
 }
 
+GLuint ShaderManager::getBackfaceDepth() {
+    return m_multipass_sss_shader->getBackfaceDepth();
+}
+

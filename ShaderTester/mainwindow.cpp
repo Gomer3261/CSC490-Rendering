@@ -50,9 +50,10 @@ void MainWindow::openFile()
         ui->objectList->clear();
     }
     m_scene = new Scene();
+    //m_scene->addFilter(m_filters["through"]);
     //m_scene->addFilter(m_filters["depth"]);
-    m_scene->addFilter(m_filters["ssao"]);
-    m_scene->addFilter(m_filters["glow"]);
+    //m_scene->addFilter(m_filters["ssao"]);
+    //m_scene->addFilter(m_filters["glow"]);
     //m_scene->addFilter(m_filters["ripple"]);
     //m_scene->addFilter(m_filters["gaussian"]);
     //m_scene->addFilter(m_filters["gaussiandof"]);

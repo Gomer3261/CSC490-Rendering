@@ -109,7 +109,7 @@ void Scene::paintGL()
         if(render_pass == 0) {
             GLenum bufferOne[] = {GL_COLOR_ATTACHMENT0};
             glDrawBuffers(1, bufferOne);
-            glClearColor(1.0, 1.0, 1.0, 1.0);
+            glClearColor(0.0, 0.0, 0.0, 1.0);
             GLenum bufferTwo[] = {GL_COLOR_ATTACHMENT1};
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glDrawBuffers(1, bufferTwo);
@@ -119,6 +119,8 @@ void Scene::paintGL()
                                     GL_COLOR_ATTACHMENT1};
             glDrawBuffers(2,drawBuffers);
         } else {
+            GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
+            glDrawBuffers(1,drawBuffers);
             glClearColor(1.0, 1.0, 1.0, 1.0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
@@ -143,6 +145,12 @@ void Scene::paintGL()
             glDisable(GL_LIGHTING);
         } else {
             m_filters[render_pass-1]->paintGL();
+        }
+
+        if(m_filters.length() == 0) {
+            // OpenGL will merge all color attachments for final result. This removes the second attachment.
+            GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
+            glDrawBuffers(1,drawBuffers);
         }
     }
 

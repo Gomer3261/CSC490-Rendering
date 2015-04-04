@@ -13,6 +13,7 @@ protected:
     void updateAttributes(int pass);
 
     GLint *m_uniform_backface_input;
+    GLint *m_uniform_backface_depth;
 private:
     void init();
 };

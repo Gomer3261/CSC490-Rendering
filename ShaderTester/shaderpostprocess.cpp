@@ -73,8 +73,6 @@ void ShaderPostProcess::init(QString vshader, QString fshader)
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo_fbo_vertices);
     glBufferData(GL_ARRAY_BUFFER, sizeof(fbo_vertices), fbo_vertices, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    /* Init Shader */
 }
 
 void ShaderPostProcess::setupFBO(int pass)
