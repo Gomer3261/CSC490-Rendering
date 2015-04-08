@@ -10,7 +10,11 @@ Material::Material() :
     m_emission(),           // Ke r g b
     m_dissolve(),           // d dissolve depth
     m_optical_density(),    // Ni optical density
-    m_illumination_model(2) // illum #
+    m_illumination_model(2),// illum #
+    m_diffuse_tex(0),
+    m_bump_tex(0),
+    m_normal_tex(0),
+    m_specular_tex(0)
 {
     m_ambient[0] = 1.0f;
     m_ambient[1] = 1.0f;
@@ -49,6 +53,18 @@ Material::Material() :
 
 Material::~Material()
 {
+    if(m_diffuse_tex != 0) {
+        glDeleteTextures(1, &m_diffuse_tex);
+    }
+    if(m_bump_tex != 0) {
+        glDeleteTextures(1, &m_bump_tex);
+    }
+    if(m_normal_tex != 0) {
+        glDeleteTextures(1, &m_normal_tex);
+    }
+    if(m_specular_tex != 0) {
+        glDeleteTextures(1, &m_specular_tex);
+    }
 }
 
 void Material::initializeGL()
@@ -77,6 +93,23 @@ void Material::beginGL()
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_specular);
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_shininess);
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, m_emission);
+
+    if(m_diffuse_tex != 0) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_diffuse_tex);
+    }
+    if(m_bump_tex != 0) {
+        glActiveTexture(GL_TEXTURE0 + 1);
+        glBindTexture(GL_TEXTURE_2D, m_bump_tex);
+    }
+    if(m_normal_tex != 0) {
+        glActiveTexture(GL_TEXTURE0 + 2);
+        glBindTexture(GL_TEXTURE_2D, m_normal_tex);
+    }
+    if(m_specular_tex != 0) {
+        glActiveTexture(GL_TEXTURE0 + 3);
+        glBindTexture(GL_TEXTURE_2D, m_specular_tex);
+    }
 }
 
 void Material::endGL()
@@ -103,11 +136,39 @@ void Material::setDiffuse(float r, float g, float b) {
     m_diffuse[3] = 1.0f;
 }
 
+void Material::setDiffuseTexture(QImage image_file) {
+    glGenTextures(1, &m_diffuse_tex);
+    glBindTexture(GL_TEXTURE_2D, m_diffuse_tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.mirrored().convertToFormat(QImage::Format_RGB888).bits());
+
+    /*float pixels[] = {
+        0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
+    };
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);*/
+}
+
 void Material::setSpecular(float r, float g, float b) {
     m_specular[0] = r;
     m_specular[1] = g;
     m_specular[2] = b;
     m_specular[3] = 1.0f;
+}
+
+void Material::setSpecularTexture(QImage image_file) {
+    glGenTextures(1, &m_specular_tex);
+    glBindTexture(GL_TEXTURE_2D, m_specular_tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.convertToFormat(QImage::Format_RGB888).bits());
 }
 
 void Material::setShininess(float shininess) {
@@ -135,4 +196,26 @@ void Material::setOpticalDensity(float d) {
 
 void Material::setIlluminationModel(int model) {
     m_illumination_model = model;
+}
+
+void Material::setBumpTexture(QImage image_file) {
+    glGenTextures(1, &m_bump_tex);
+    glBindTexture(GL_TEXTURE_2D, m_bump_tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.bits());
+}
+
+void Material::setNormalTexture(QImage image_file) {
+    glGenTextures(1, &m_normal_tex);
+    glBindTexture(GL_TEXTURE_2D, m_normal_tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.bits());
 }

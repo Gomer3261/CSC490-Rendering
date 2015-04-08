@@ -21,13 +21,18 @@ public:
 
     void setAmbient(float r, float g, float b);     // Ka r g b
     void setDiffuse(float r, float g, float b);     // Kd r g b
+    void setDiffuseTexture(QImage image_file);      // map_Kd Image File
     void setSpecular(float r, float g, float b);    // Ks r g b
     void setShininess(float shininess);             // Ns value (0 - 1)
     void setShininess(int shininess);               // Ns value (0 - 1000)
+    void setSpecularTexture(QImage image_file);     // map_Ks Image File
     void setEmission(float r, float g, float b);    // Ke r g b
     void setDissolve(float d);                      // d disolve depth (0 - 1)
     void setOpticalDensity(float d);                // Ni optical density (0 - 10)
     void setIlluminationModel(int model);           // illum (0 - 10)
+    void setBumpTexture(QImage image_file);         // map_Bump Image File
+    void setNormalTexture(QImage image_file);         // map_Normal Image File
+
     int getIlluminationModel() { return m_illumination_model; }
 
 private:
@@ -44,6 +49,11 @@ private:
     GLfloat m_dissolve;
     GLfloat m_optical_density;
     int m_illumination_model;
+
+    GLuint m_diffuse_tex;
+    GLuint m_bump_tex;
+    GLuint m_normal_tex;
+    GLuint m_specular_tex;
 };
 
 class Material::Ptr {

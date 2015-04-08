@@ -57,6 +57,7 @@ GLuint Shader::getEmissionTexture() {
 void Shader::init(QString vshader, QString fshader)
 {
     for(int i=0; i<m_passes; i++) {
+        qDebug() << "Building shader: " << fshader;
         m_programs[i] = ShaderLoader::loadProgram(vshader, fshader);
         bindAttributes(i);
     }

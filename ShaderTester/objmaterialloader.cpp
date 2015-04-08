@@ -44,11 +44,32 @@ void ObjMaterialLoader::parseObjMtlFile(QString path, QMap<QString, Material::Pt
             fscanf(file, "%f %f %f\n", &r, &g, &b );
             material->setDiffuse(r, g, b);
         }
+        else if ( strcmp( lineHeader, "map_Kd" ) == 0 )
+        {
+            char image_file[128];
+            fscanf(file, "%s\n", image_file);
+
+            QString string_file = path.left(path.lastIndexOf('/')+1);
+            string_file += image_file;
+
+            QImage image = QImage(string_file);
+            material->setDiffuseTexture(image);
+        }
         else if ( strcmp( lineHeader, "Ks" ) == 0 )
         {
             float r; float g; float b;
             fscanf(file, "%f %f %f\n", &r, &g, &b );
             material->setSpecular(r, g, b);
+        }
+        else if ( strcmp( lineHeader, "map_Ks") == 0)
+        {
+            char image_file[128];
+            fscanf(file, "%s\n", image_file);
+            QString string_file = path.left(path.lastIndexOf('/')+1);
+            string_file += image_file;
+
+            QImage image = QImage(string_file);
+            material->setSpecularTexture(image);
         }
         else if ( strcmp( lineHeader, "Ke" ) == 0 )
         {
@@ -73,6 +94,26 @@ void ObjMaterialLoader::parseObjMtlFile(QString path, QMap<QString, Material::Pt
             int model;
             fscanf(file, "%d\n", &model);
             material->setIlluminationModel(model);
+        }
+        else if ( strcmp( lineHeader, "map_Bump") == 0)
+        {
+            char image_file[128];
+            fscanf(file, "%s\n", image_file);
+            QString string_file = path.left(path.lastIndexOf('/')+1);
+            string_file += image_file;
+
+            QImage image = QImage(string_file);
+            material->setBumpTexture(image);
+        }
+        else if ( strcmp( lineHeader, "map_Normal") == 0)
+        {
+            char image_file[128];
+            fscanf(file, "%s\n", image_file);
+            QString string_file = path.left(path.lastIndexOf('/')+1);
+            string_file += image_file;
+
+            QImage image = QImage(string_file);
+            material->setNormalTexture(image);
         }
     }
 }

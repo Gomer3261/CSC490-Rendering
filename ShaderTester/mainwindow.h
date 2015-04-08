@@ -40,7 +40,7 @@ private:
     QMap<QString, ShaderPostProcess*> m_filters;
 
     QElapsedTimer m_timer;
-    int m_frames = 0;
+    int m_frames;
 
     void setShaders();
 };

@@ -3,7 +3,8 @@
 ShaderManager::ShaderManager() :
     m_basic_shader(new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Basic.fsh")),
     m_simple_sss_shader(new ShaderSimpleSSS("../../../../shaders/Basic.vsh", "../../../../shaders/SSS.fsh")),
-    m_multipass_sss_shader(new ShaderMultipassSSS("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Basic.vsh", "../../../../shaders/BackfaceSSS.fsh"))
+    m_multipass_sss_shader(new ShaderMultipassSSS("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Basic.vsh", "../../../../shaders/BackfaceSSS.fsh")),
+    m_texture_shader(new TextureShader("../../../../shaders/Textured.vsh", "../../../../shaders/Textured.fsh"))
 {
 }
 
@@ -11,12 +12,17 @@ ShaderManager::~ShaderManager()
 {
     delete m_basic_shader;
     delete m_simple_sss_shader;
+    delete m_multipass_sss_shader;
+    delete m_texture_shader;
 }
 
 Shader* ShaderManager::getShader(int illumination_model)
 {
     switch(illumination_model)
     {
+    case 7: // Ambient, Diffuse, Specular
+        m_texture_shader->setLightingFlags(USE_BASIC_LIGHTING);
+        return m_texture_shader;
     case 6: // Ambient, Diffuse, Emission
         m_basic_shader->setLightingFlags(USE_AMBIENT | USE_DIFFUSE | USE_EMISSION);
         return m_basic_shader;
