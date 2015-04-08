@@ -10,10 +10,10 @@ Scene::Scene() :
     OrbitalLight* light_1 = new OrbitalLight(GL_LIGHT0, lightTransform, 10.0f, 5.0f, 0.01f);
 
     //GLfloat lightSpec[] = {0.4f, 0.4f, 1.0f, 1.0f};
-    GLfloat lightSpec[] = {0.6f, 0.6f, 0.6f, 1.0f};
+    GLfloat lightSpec[] = {0.6f, 0.6f, 0.9f, 1.0f};
     GLfloat lightDif[] = {0.6f, 0.6f, 0.9f, 1.0f};
     //GLfloat lightDif[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    GLfloat lightAmb[] = {0.005f, 0.005f, 0.025f, 1.0f};
+    GLfloat lightAmb[] = {0.015f, 0.015f, 0.025f, 1.0f};
 
     light_1->initializeGL(lightSpec, lightDif, lightAmb);
 
@@ -27,7 +27,7 @@ Scene::Scene() :
     GLfloat lightSpec_2[] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat lightDif_2[] = {0.95f, 0.8f, 0.75f, 1.0f};
     //GLfloat lightDif_2[] = {0.7f, 0.7f, 0.7f, 1.0f};
-    GLfloat lightAmb_2[] = {0.025f, 0.020f, 0.00f, 1.0f};
+    GLfloat lightAmb_2[] = {0.25f, 0.20f, 0.15f, 1.0f};
 
     light_2->initializeGL(lightSpec_2, lightDif_2, lightAmb_2);
 
@@ -88,9 +88,6 @@ void Scene::resizeGL(int width, int height) {
 
 void Scene::paintGL()
 {
-    QElapsedTimer timer;
-    timer.start();
-
     ShaderManager::getInstance().initializeGL();
 
     for(int render_pass=0; render_pass<m_filters.length()+1; render_pass++)
@@ -159,8 +156,6 @@ void Scene::paintGL()
             glDrawBuffers(1,drawBuffers);
         }
     }
-
-    //qDebug() << "Draw time: " << timer.nsecsElapsed()/1000000.0f << "µs";
 }
 
 int Scene::getLightCount()

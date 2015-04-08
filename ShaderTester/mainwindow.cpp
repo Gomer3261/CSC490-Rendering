@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scene(NULL),
     m_objects(),
     m_filters(),
-    m_selected(NULL)
+    m_timer(),
+    m_frames(0)
 {
     ui->setupUi(this);
     animationTimer = new QTimer(this);
@@ -35,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
           listItem->setCheckState(Qt::Unchecked);
           ui->shaderList->addItem(listItem);
     }
+
+
+    m_timer.start();
 }
 
 MainWindow::~MainWindow()
@@ -48,6 +52,13 @@ MainWindow::~MainWindow()
 void MainWindow::drawOpenGL()
 {
     ui->oglview->repaint();
+    m_frames++;
+    double fps = m_frames / (m_timer.elapsed() / 1000.0);
+    if(m_frames > 100) {
+        m_timer.start();
+        m_frames = 0;
+    }
+    ui->fpslabel->setText(QString("FPS: %1").arg(QString::number( fps, 'f', 2 )));
 }
 
 void MainWindow::openFile()

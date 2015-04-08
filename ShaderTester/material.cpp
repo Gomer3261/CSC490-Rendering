@@ -40,7 +40,10 @@ Material::Material() :
      * 0		Color on and Ambient off
      * 1		Color on and Ambient on
      * 2		Highlight on
-     * 3
+     * 3        Emission
+     * 4        Simple SSS
+     * 5        Real SSS
+     * 6        Highlight off Emission
      */
 }
 

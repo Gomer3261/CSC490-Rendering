@@ -17,6 +17,9 @@ Shader* ShaderManager::getShader(int illumination_model)
 {
     switch(illumination_model)
     {
+    case 6: // Ambient, Diffuse, Emission
+        m_basic_shader->setLightingFlags(USE_AMBIENT | USE_DIFFUSE | USE_EMISSION);
+        return m_basic_shader;
     case 5: // Multipass SSS, measured depth and normals for backface.
         m_multipass_sss_shader->setLightingFlags(USE_BASIC_LIGHTING);
         return m_multipass_sss_shader;

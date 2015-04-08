@@ -39,7 +39,8 @@ private:
     QMap<QString, RenderObject*> m_objects;
     QMap<QString, ShaderPostProcess*> m_filters;
 
-    QListWidgetItem *m_selected;
+    QElapsedTimer m_timer;
+    int m_frames = 0;
 
     void setShaders();
 };
