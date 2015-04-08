@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     shadersimplesss.cpp \
     shaderpostprocessglow.cpp \
     shadermultipasssss.cpp \
-    shaderpostprocesssssdebug.cpp
+    shaderpostprocesssssdebug.cpp \
+    dragsensitivelistwidget.cpp
 
 HEADERS  += mainwindow.h \
     openglview.h \
@@ -52,6 +53,7 @@ HEADERS  += mainwindow.h \
     shadersimplesss.h \
     shaderpostprocessglow.h \
     shadermultipasssss.h \
-    shaderpostprocesssssdebug.h
+    shaderpostprocesssssdebug.h \
+    dragsensitivelistwidget.h
 
 FORMS    += mainwindow.ui

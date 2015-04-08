@@ -54,6 +54,10 @@ void Scene::addFilter(ShaderPostProcess* filter) {
     m_filters.append(filter);
 }
 
+void Scene::clearFilters() {
+    m_filters.clear();
+}
+
 void Scene::initializeGL()
 {
     /*for(int i=0; i<m_lights.length(); i++) {
@@ -65,7 +69,9 @@ void Scene::initializeGL()
     }
 
     // Need to attach our emission image to the first frame buffer, which is not known before runtime!
-    glBindFramebuffer(GL_FRAMEBUFFER, m_filters[0]->getFrameBuffer());
+    if(m_filters.length() > 0) {
+        glBindFramebuffer(GL_FRAMEBUFFER, m_filters[0]->getFrameBuffer());
+    }
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, ShaderManager::getInstance().getGlowTexture(), 0);
     GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
                             GL_COLOR_ATTACHMENT1};

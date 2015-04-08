@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QFileDialog>
+#include <QList>
 #include <QListWidgetItem>
 
 #include "objloader.h"
@@ -28,6 +29,7 @@ public:
 public slots:
     void drawOpenGL();
     void openFile();
+    void shadersChanged(QListWidgetItem* item);
 
 private:
     Ui::MainWindow *ui;
@@ -38,6 +40,8 @@ private:
     QMap<QString, ShaderPostProcess*> m_filters;
 
     QListWidgetItem *m_selected;
+
+    void setShaders();
 };
 
 #endif // MAINWINDOW_H

@@ -54,7 +54,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="shaderList">
+       <widget class="DragSensitiveListWidget" name="shaderList">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -70,21 +70,6 @@
         <property name="alternatingRowColors">
          <bool>true</bool>
         </property>
-        <item>
-         <property name="text">
-          <string>Hello</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Chicken</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bacon</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item>
@@ -145,6 +130,14 @@
    <header>openglview.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>DragSensitiveListWidget</class>
+   <extends>QListWidget</extends>
+   <header>dragsensitivelistwidget.h</header>
+   <slots>
+    <signal>itemDropped()</signal>
+   </slots>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -164,8 +157,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>shaderList</sender>
+   <signal>itemChanged(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>shadersChanged(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>752</x>
+     <y>423</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openFile()</slot>
+  <slot>shadersChanged(QListWidgetItem*)</slot>
+  <slot>shadersOrdered()</slot>
  </slots>
 </ui>

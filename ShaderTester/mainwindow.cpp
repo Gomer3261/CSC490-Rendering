@@ -26,6 +26,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_filters.insert("bokehdof", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/BokehDOF.fsh", false));
     m_filters.insert("bokehdofcpu", new ShaderPostProcessFocal("../../../../filters/Through.vsh", "../../../../filters/BokehDOFCPU.fsh", false));
     m_filters.insert("glow", new ShaderPostProcessGlow("../../../../filters/Through.vsh", "../../../../filters/Glow.fsh", false));
+
+
+    QListIterator<QString> it(m_filters.keys());
+    while (it.hasNext())
+    {
+          QListWidgetItem *listItem = new QListWidgetItem(it.next(), ui->shaderList);
+          listItem->setCheckState(Qt::Unchecked);
+          ui->shaderList->addItem(listItem);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -50,17 +59,13 @@ void MainWindow::openFile()
         ui->objectList->clear();
     }
     m_scene = new Scene();
-    //m_scene->addFilter(m_filters["through"]);
-    //m_scene->addFilter(m_filters["depth"]);
-    //m_scene->addFilter(m_filters["ssao"]);
-    //m_scene->addFilter(m_filters["glow"]);
-    //m_scene->addFilter(m_filters["ripple"]);
-    //m_scene->addFilter(m_filters["gaussian"]);
-    //m_scene->addFilter(m_filters["gaussiandof"]);
-    //m_scene->addFilter(m_filters["bokeh"]);
-    //m_scene->addFilter(m_filters["bokehdof"]);
-    //m_scene->addFilter(m_filters["bokehdofcpu"]);
-    //m_scene->addFilter(m_filters["sssdebug"]);
+    for(int row = 0; row < ui->shaderList->count(); row++)
+    {
+        QListWidgetItem *item = ui->shaderList->item(row);
+        if(item->checkState() == Qt::Checked) {
+            m_scene->addFilter(m_filters[item->text()]);
+        }
+    }
     ui->oglview->setScene(m_scene);
     foreach (QString file, fileNames) {
         QString root;
@@ -81,4 +86,21 @@ void MainWindow::openFile()
         }
     }
     m_scene->initializeGL();
+}
+
+void MainWindow::shadersChanged(QListWidgetItem* old_item) {
+    if(m_scene != NULL) {
+        m_scene->clearFilters();
+        for(int row = 0; row < ui->shaderList->count(); row++)
+        {
+            QListWidgetItem *item = ui->shaderList->item(row);
+            if(item->checkState() == Qt::Checked) {
+                if(item->text() != old_item->text() || item == old_item) {
+                    m_scene->addFilter(m_filters[item->text()]);
+                }
+            }
+        }
+        ui->oglview->setScene(m_scene);
+        m_scene->initializeGL();
+    }
 }

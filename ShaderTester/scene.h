@@ -16,6 +16,7 @@ public:
     ~Scene();
     void addObject(RenderObject* object);
     void addFilter(ShaderPostProcess* filter);
+    void clearFilters();
 
     void initializeGL();
     void resizeGL(int width, int height);
