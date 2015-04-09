@@ -20,6 +20,7 @@ Shader* ShaderManager::getShader(int illumination_model)
 {
     switch(illumination_model)
     {
+
     case 7: // Ambient, Diffuse, Specular
         m_texture_shader->setLightingFlags(USE_BASIC_LIGHTING);
         return m_texture_shader;
@@ -53,6 +54,7 @@ void ShaderManager::initializeGL()
     m_basic_shader->initializeGL();
     m_simple_sss_shader->initializeGL();
     m_multipass_sss_shader->initializeGL();
+    m_texture_shader->initializeGL();
 }
 
 void ShaderManager::resizeGL(int screen_width, int screen_height)
@@ -60,6 +62,7 @@ void ShaderManager::resizeGL(int screen_width, int screen_height)
     m_basic_shader->resizeGL(screen_width, screen_height);
     m_simple_sss_shader->resizeGL(screen_width, screen_height);
     m_multipass_sss_shader->resizeGL(screen_width, screen_height);
+    m_texture_shader->resizeGL(screen_width, screen_height);
 }
 
 GLuint ShaderManager::getGlowTexture() {

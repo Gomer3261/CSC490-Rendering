@@ -6,7 +6,7 @@ TextureShader::TextureShader(QString vshader, QString fshader) :
     m_uniform_normal(new GLint(m_passes)),
     m_uniform_specular(new GLint(m_passes))
 {
-
+    init();
 }
 
 TextureShader::~TextureShader()
@@ -35,7 +35,7 @@ void TextureShader::bindAttributes(int pass)
         qWarning() << "Could not bind uniform normal_texture";
     }
 
-    m_uniform_normal[pass] = glGetUniformLocation(m_programs[pass], "specular_texture");
+    m_uniform_specular[pass] = glGetUniformLocation(m_programs[pass], "specular_texture");
     if (m_uniform_specular[pass] == -1) {
         qWarning() << "Could not bind uniform specular_texture";
     }

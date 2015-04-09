@@ -29,14 +29,14 @@ Material::Material() :
     m_specular[0] = 0.0f;
     m_specular[1] = 0.0f;
     m_specular[2] = 0.0f;
-    m_specular[3] = 0.0f;
+    m_specular[3] = 1.0f;
 
     m_shininess = 0.001f;
 
     m_emission[0] = 0.0f;
     m_emission[1] = 0.0f;
     m_emission[2] = 0.0f;
-    m_emission[3] = 0.0f;
+    m_emission[3] = 1.0f;
 
     // illum #
     m_illumination_model = 2;
@@ -168,7 +168,7 @@ void Material::setSpecularTexture(QImage image_file) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.convertToFormat(QImage::Format_RGB888).bits());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.mirrored().convertToFormat(QImage::Format_RGB888).bits());
 }
 
 void Material::setShininess(float shininess) {
@@ -206,7 +206,7 @@ void Material::setBumpTexture(QImage image_file) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.bits());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.mirrored().convertToFormat(QImage::Format_RGB888).bits());
 }
 
 void Material::setNormalTexture(QImage image_file) {
@@ -217,5 +217,5 @@ void Material::setNormalTexture(QImage image_file) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.bits());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_file.width(), image_file.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image_file.mirrored().convertToFormat(QImage::Format_RGB888).bits());
 }

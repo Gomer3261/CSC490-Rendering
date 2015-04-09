@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     animationTimer = new QTimer(this);
 
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(drawOpenGL()));
-    animationTimer->start(20);
+    animationTimer->start(16);
 
     m_filters.insert("through", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Through.fsh", false));
     m_filters.insert("sssdebug", new ShaderPostProcessSSSDebug("../../../../filters/Through.vsh", "../../../../filters/SSSDebug.fsh", false));
@@ -52,6 +52,7 @@ MainWindow::~MainWindow()
 void MainWindow::drawOpenGL()
 {
     ui->oglview->repaint();
+
     m_frames++;
     double fps = m_frames / (m_timer.elapsed() / 1000.0);
     if(m_frames > 100) {
@@ -59,6 +60,7 @@ void MainWindow::drawOpenGL()
         m_frames = 0;
     }
     ui->fpslabel->setText(QString("FPS: %1").arg(QString::number( fps, 'f', 2 )));
+
 }
 
 void MainWindow::openFile()

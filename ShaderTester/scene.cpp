@@ -112,11 +112,11 @@ void Scene::paintGL()
         if(render_pass == 0) {
             GLenum bufferOne[] = {GL_COLOR_ATTACHMENT0};
             glDrawBuffers(1, bufferOne);
-            glClearColor(0.0, 0.0, 0.0, 1.0);
+            glClearColor(1.0, 1.0, 1.0, 1.0);
             GLenum bufferTwo[] = {GL_COLOR_ATTACHMENT1};
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glDrawBuffers(1, bufferTwo);
-            glClearColor(0.0, 0.0, 0.0, 1.0);
+            glClearColor(1.0, 1.0, 1.0, 1.0);
             glClear(GL_COLOR_BUFFER_BIT);
             GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
                                     GL_COLOR_ATTACHMENT1};

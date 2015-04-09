@@ -13,7 +13,6 @@ protected:
     float m_rim_multiplier;
 
     GLint *m_uniform_thickness;
-    GLint *m_uniform_exctinction_coefficient;
     GLint *m_uniform_rim_multiplier;
 
     void init();

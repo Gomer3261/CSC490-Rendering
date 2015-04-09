@@ -17,7 +17,6 @@ ShaderMultipassSSS::ShaderMultipassSSS(QString vshader, QString fshader, QString
     m_uniform_blurred_backface_height(0),
     m_uniform_blurred_backface_texture(0),
     m_uniform_blurred_backface_depth(0),
-    m_uniform_exctinction_coefficient(0),
     m_uniform_rim_multiplier(0),
     m_result_fbo(0)
 {
@@ -170,11 +169,6 @@ void ShaderMultipassSSS::bindAttributes(int pass)
             qWarning() << "Could not bind uniform blurred_backface_depth";
         }
 
-        m_uniform_exctinction_coefficient = glGetUniformLocation(m_programs[pass], "exctinction_coefficient");
-        if (m_uniform_exctinction_coefficient == -1) {
-            qWarning() << "Could not bind uniform exctinction_coefficient";
-        }
-
         m_uniform_rim_multiplier = glGetUniformLocation(m_programs[pass], "rim_multiplier");
         if (m_uniform_rim_multiplier == -1) {
             qWarning() << "Could not bind uniform rim_multiplier";
@@ -197,7 +191,6 @@ void ShaderMultipassSSS::updateAttributes(int pass)
         glUniform1i(m_uniform_blurred_backface_texture, 0);
         glUniform1i(m_uniform_blurred_backface_depth, 1);
 
-        glUniform3f(m_uniform_exctinction_coefficient, 0.6f, 0.4f, 0.8f); // Would love to get from material :D
         glUniform1f(m_uniform_rim_multiplier, m_rim_multiplier);
     }
 }

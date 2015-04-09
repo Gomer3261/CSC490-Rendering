@@ -36,7 +36,6 @@ protected:
     GLint m_uniform_blurred_backface_texture;
     GLint m_uniform_blurred_backface_depth;
 
-    GLint m_uniform_exctinction_coefficient;
     GLint m_uniform_rim_multiplier;
 
     void init(QString vshader, QString fshader);

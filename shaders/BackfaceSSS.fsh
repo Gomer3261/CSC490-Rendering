@@ -13,7 +13,6 @@ uniform int backface_height;
 uniform sampler2D backface_texture;
 uniform sampler2D backface_depth;
 
-uniform vec3 exctinction_coefficient;
 uniform float rim_multiplier;
 
 float thickness = 0;
@@ -36,7 +35,7 @@ vec4 lightSource( vec3 normal, vec3 back_normal, vec3 position, gl_LightSourcePa
     float NdotH = max(0.0, dot(reflection, eye));
 
     float Idiff = NdotL;
-    float Ispec = pow( NdotH, gl_FrontMaterial.shininess );
+    float Ispec = pow( NdotH, (1-gl_FrontMaterial.shininess)*1000 );
 
     // Backlight coefficient multiplied by thickness of object.
     float Iback = (1.0 - thickness)*(1.0 - thickness) * HLINdotL;
@@ -46,11 +45,10 @@ vec4 lightSource( vec3 normal, vec3 back_normal, vec3 position, gl_LightSourcePa
     Iedge *= Iedge * NdotL;
 
     return
-            gl_FrontMaterial.emission * emission_on +
             (gl_FrontMaterial.ambient * light.ambient * ambient_on) +
             (gl_FrontMaterial.diffuse * light.diffuse * Idiff * diffuse_on) +
-            (gl_FrontMaterial.diffuse * Iback * light.diffuse * attenuation * vec4(exctinction_coefficient, 1.0)) +
-            (gl_FrontMaterial.diffuse * Iedge * rim_multiplier * light.specular * vec4(exctinction_coefficient, 1.0)) +
+            (gl_FrontMaterial.diffuse * Iback * light.diffuse * attenuation * gl_FrontMaterial.emission) +
+            (gl_FrontMaterial.diffuse * Iedge * rim_multiplier * light.specular * gl_FrontMaterial.emission) +
             (gl_FrontMaterial.specular * light.specular * Ispec * specular_on);
 }
 

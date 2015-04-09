@@ -130,9 +130,9 @@ void Shader::bindAttributes(int pass)
 void Shader::updateAttributes(int pass)
 {
     glUniform1i(m_uniform_lcount[pass], 2);
-    glUniform1i(m_uniform_ambient[pass], (m_lighting_flags & USE_AMBIENT) > 0);
-    glUniform1i(m_uniform_diffuse[pass], (m_lighting_flags & USE_DIFFUSE) > 0);
-    glUniform1i(m_uniform_specular[pass], (m_lighting_flags & USE_SPECULAR) > 0);
-    glUniform1i(m_uniform_emission[pass], (m_lighting_flags & USE_EMISSION) > 0);
+    glUniform1i(m_uniform_ambient[pass], ((m_lighting_flags & USE_AMBIENT) > 0) ? 1 : 0);
+    glUniform1i(m_uniform_diffuse[pass], ((m_lighting_flags & USE_DIFFUSE) > 0) ? 1 : 0);
+    glUniform1i(m_uniform_specular[pass], ((m_lighting_flags & USE_SPECULAR) > 0) ? 1 : 0);
+    glUniform1i(m_uniform_emission[pass], ((m_lighting_flags & USE_EMISSION) > 0) ? 1 : 0);
 }
 

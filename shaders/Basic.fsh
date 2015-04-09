@@ -11,14 +11,13 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
 {
         vec3 direction = normalize(light.position.xyz - position);
         vec3 eye = normalize(-position);
-        vec3 reflect = normalize(-reflect(direction, normal));
+        vec3 reflection = normalize(-reflect(direction, normal));
 
         float NdotL = max(0.0, dot(normal, direction));
-        float NdotH = max(0.0, dot(reflect, eye));
+        float NdotH = max(0.0, dot(reflection, eye));
 
         float Idiff = NdotL;
-        float Ispec = pow( NdotH, gl_FrontMaterial.shininess );
-
+        float Ispec = pow( NdotH, (1-gl_FrontMaterial.shininess)*1000 );
         // 'real' shading
         return
                 gl_FrontMaterial.emission * emission_on +
