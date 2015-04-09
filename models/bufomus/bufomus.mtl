@@ -6,9 +6,10 @@ Ns 100.0
 Ka 0.500000 0.500000 0.500000
 Kd 0.640000 0.640000 0.640000
 Ks 0.800000 0.800000 0.800000
+Ke 0.800000 0.400000 0.400000
 Ni 1.000000
 d 1.000000
-illum 7
+illum 8
 map_Bump bump.png
 map_Normal normal.png
 map_Kd diffuse.png

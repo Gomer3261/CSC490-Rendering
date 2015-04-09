@@ -181,15 +181,15 @@ void ShaderMultipassSSS::updateAttributes(int pass)
     Shader::updateAttributes(pass);
 
     if(pass == 1) {
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0 + 4);
         glBindTexture(GL_TEXTURE_2D, m_fbo_textures[pass]);
-        glActiveTexture(GL_TEXTURE0 + 1);
+        glActiveTexture(GL_TEXTURE0 + 5);
         glBindTexture(GL_TEXTURE_2D, m_fbo_depths[pass]);
 
         glUniform1i(m_uniform_blurred_backface_width, m_screen_width);
         glUniform1i(m_uniform_blurred_backface_height, m_screen_height);
-        glUniform1i(m_uniform_blurred_backface_texture, 0);
-        glUniform1i(m_uniform_blurred_backface_depth, 1);
+        glUniform1i(m_uniform_blurred_backface_texture, 4);
+        glUniform1i(m_uniform_blurred_backface_depth, 5);
 
         glUniform1f(m_uniform_rim_multiplier, m_rim_multiplier);
     }
@@ -225,15 +225,15 @@ void ShaderMultipassSSS::endGL(int pass)
 
         glUseProgram(m_blur_program);
 
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0 + 6);
         glBindTexture(GL_TEXTURE_2D, m_fbo_textures[0]);
-        glActiveTexture(GL_TEXTURE0 + 1);
+        glActiveTexture(GL_TEXTURE0 + 7);
         glBindTexture(GL_TEXTURE_2D, m_fbo_depths[0]);
 
         glUniform1i(m_uniform_backface_width, m_screen_width);
         glUniform1i(m_uniform_backface_height, m_screen_height);
-        glUniform1i(m_uniform_backface_texture, 0);
-        glUniform1i(m_uniform_backface_depth, 1);
+        glUniform1i(m_uniform_backface_texture, 6);
+        glUniform1i(m_uniform_backface_depth, 7);
 
         glEnableVertexAttribArray(m_attribute_v_coord_postproc);
 

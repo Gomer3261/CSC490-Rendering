@@ -4,6 +4,7 @@
 #include "shader.h"
 #include "shadersimplesss.h"
 #include "shadermultipasssss.h"
+#include "shadermultipassssstextured.h"
 #include "textureshader.h"
 
 class ShaderManager
@@ -19,6 +20,7 @@ private:
     ShaderSimpleSSS *m_simple_sss_shader;
     ShaderMultipassSSS *m_multipass_sss_shader;
     TextureShader *m_texture_shader;
+    ShaderMultipassSSSTextured *m_multipass_sss_textured_shader;
 public:
     static ShaderManager& getInstance()
     {
