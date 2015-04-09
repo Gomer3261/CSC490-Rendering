@@ -5,7 +5,8 @@ ShaderManager::ShaderManager() :
     m_simple_sss_shader(new ShaderSimpleSSS("../../../../shaders/Basic.vsh", "../../../../shaders/SSS.fsh")),
     m_multipass_sss_shader(new ShaderMultipassSSS("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Basic.vsh", "../../../../shaders/BackfaceSSS.fsh")),
     m_texture_shader(new TextureShader("../../../../shaders/Textured.vsh", "../../../../shaders/Textured.fsh")),
-    m_multipass_sss_textured_shader(new ShaderMultipassSSSTextured("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Textured.vsh", "../../../../shaders/BackfaceSSSTextured.fsh"))
+    m_multipass_sss_textured_shader(new ShaderMultipassSSSTextured("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Textured.vsh", "../../../../shaders/BackfaceSSSTextured.fsh")),
+    m_toon_shader(new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Toon.fsh"))
 {
 }
 
@@ -16,12 +17,16 @@ ShaderManager::~ShaderManager()
     delete m_multipass_sss_shader;
     delete m_texture_shader;
     delete m_multipass_sss_textured_shader;
+    delete m_toon_shader;
 }
 
 Shader* ShaderManager::getShader(int illumination_model)
 {
     switch(illumination_model)
     {
+    case 9:
+        m_toon_shader->setLightingFlags(USE_AMBIENT | USE_DIFFUSE);
+        return m_toon_shader;
     case 8:
         m_multipass_sss_textured_shader->setLightingFlags(USE_BASIC_LIGHTING | USE_EMISSION);
         return m_multipass_sss_textured_shader;
@@ -60,6 +65,7 @@ void ShaderManager::initializeGL()
     m_multipass_sss_shader->initializeGL();
     m_texture_shader->initializeGL();
     m_multipass_sss_textured_shader->initializeGL();
+    m_toon_shader->initializeGL();
 }
 
 void ShaderManager::resizeGL(int screen_width, int screen_height)
@@ -69,6 +75,7 @@ void ShaderManager::resizeGL(int screen_width, int screen_height)
     m_multipass_sss_shader->resizeGL(screen_width, screen_height);
     m_texture_shader->resizeGL(screen_width, screen_height);
     m_multipass_sss_textured_shader->resizeGL(screen_width, screen_height);
+    m_toon_shader->resizeGL(screen_width, screen_height);
 }
 
 GLuint ShaderManager::getGlowTexture() {

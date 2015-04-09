@@ -52,7 +52,7 @@ float blur_depth(vec2 coords) //blurring depth
 
 void main() {
     float depth = blur_depth(f_texcoord.xy);
-    float radius = clamp((abs(depth - focal_point)/range)*100.0,-radius_max,radius_max);
+    float radius = clamp((abs(depth - focal_point)/range)*30,-radius_max,radius_max);
 
     //this will be our RGBA sum
     vec4 result = vec4(0.0);

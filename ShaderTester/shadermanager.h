@@ -21,6 +21,7 @@ private:
     ShaderMultipassSSS *m_multipass_sss_shader;
     TextureShader *m_texture_shader;
     ShaderMultipassSSSTextured *m_multipass_sss_textured_shader;
+    Shader *m_toon_shader;
 public:
     static ShaderManager& getInstance()
     {

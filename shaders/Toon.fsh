@@ -17,6 +17,13 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
         float NdotH = max(0.0, dot(reflection, eye));
 
         float Idiff = NdotL;
+        if(Idiff > 0.6) {
+            Idiff = 1.0;
+        } else if(Idiff > 0.3) {
+            Idiff = 0.6;
+        } else if(Idiff > 0.0) {
+            Idiff = 0.3;
+        }
         float Ispec = pow( NdotH, (1-gl_FrontMaterial.shininess)*1000 );
         // 'real' shading
         return
