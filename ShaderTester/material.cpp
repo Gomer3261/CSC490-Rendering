@@ -126,14 +126,12 @@ void Material::setAmbient(float r, float g, float b) {
     m_ambient[0] = r;
     m_ambient[1] = g;
     m_ambient[2] = b;
-    m_ambient[3] = 1.0f;
 }
 
 void Material::setDiffuse(float r, float g, float b) {
     m_diffuse[0] = r;
     m_diffuse[1] = g;
     m_diffuse[2] = b;
-    m_diffuse[3] = 1.0f;
 }
 
 void Material::setDiffuseTexture(QImage image_file) {
@@ -157,7 +155,6 @@ void Material::setSpecular(float r, float g, float b) {
     m_specular[0] = r;
     m_specular[1] = g;
     m_specular[2] = b;
-    m_specular[3] = 1.0f;
 }
 
 void Material::setSpecularTexture(QImage image_file) {
@@ -183,7 +180,6 @@ void Material::setEmission(float r, float g, float b) {
     m_emission[0] = r;
     m_emission[1] = g;
     m_emission[2] = b;
-    m_emission[3] = 1.0f;
 }
 
 void Material::setDissolve(float d) {
@@ -192,6 +188,13 @@ void Material::setDissolve(float d) {
 
 void Material::setOpticalDensity(float d) {
     m_optical_density = d;
+}
+
+void Material::setAlpha(float alpha) {
+    m_ambient[3] = alpha;
+    m_diffuse[3] = alpha;
+    m_specular[3] = alpha;
+    m_emission[3] = alpha;
 }
 
 void Material::setIlluminationModel(int model) {

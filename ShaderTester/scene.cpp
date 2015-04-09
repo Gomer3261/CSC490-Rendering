@@ -71,11 +71,12 @@ void Scene::initializeGL()
     // Need to attach our emission image to the first frame buffer, which is not known before runtime!
     if(m_filters.length() > 0) {
         glBindFramebuffer(GL_FRAMEBUFFER, m_filters[0]->getFrameBuffer());
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, ShaderManager::getInstance().getGlowTexture(), 0);
+        GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
+                                GL_COLOR_ATTACHMENT1};
+        glDrawBuffers(2,drawBuffers);
     }
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, ShaderManager::getInstance().getGlowTexture(), 0);
-    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
-                            GL_COLOR_ATTACHMENT1};
-    glDrawBuffers(2,drawBuffers);
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -110,20 +111,21 @@ void Scene::paintGL()
         // Clear buffers correctly. This deals with the special emissions case.
         // Couldn't get https://www.opengl.org/wiki/GLAPI/glClearBuffer to work...
         if(render_pass == 0) {
-            GLenum bufferOne[] = {GL_COLOR_ATTACHMENT0};
-            glDrawBuffers(1, bufferOne);
+            glDrawBuffer(GL_COLOR_ATTACHMENT0);
             glClearColor(1.0, 1.0, 1.0, 1.0);
-            GLenum bufferTwo[] = {GL_COLOR_ATTACHMENT1};
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glDrawBuffers(1, bufferTwo);
-            glClearColor(1.0, 1.0, 1.0, 1.0);
-            glClear(GL_COLOR_BUFFER_BIT);
-            GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
-                                    GL_COLOR_ATTACHMENT1};
-            glDrawBuffers(2,drawBuffers);
-        } else {
-            GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
-            glDrawBuffers(1,drawBuffers);
+
+            if(m_filters.length() > 0) {
+                glDrawBuffer(GL_COLOR_ATTACHMENT1);
+                glClearColor(0.0, 0.0, 0.0, 1.0);
+                glClear(GL_COLOR_BUFFER_BIT);
+
+                GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0,
+                                        GL_COLOR_ATTACHMENT1};
+                glDrawBuffers(2,drawBuffers);
+            }
+        } else {;
+            glDrawBuffer(GL_COLOR_ATTACHMENT0);
             glClearColor(1.0, 1.0, 1.0, 1.0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }

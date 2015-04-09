@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     animationTimer->start(16);
 
     m_filters.insert("through", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Through.fsh", false));
+    m_filters.insert("grayscale", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/GrayScale.fsh", false));
     m_filters.insert("sssdebug", new ShaderPostProcessSSSDebug("../../../../filters/Through.vsh", "../../../../filters/SSSDebug.fsh", false));
     m_filters.insert("depth", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/Depth.fsh", false));
     m_filters.insert("ssao", new ShaderPostProcess("../../../../filters/Through.vsh", "../../../../filters/SimpleSSAO.fsh", false));

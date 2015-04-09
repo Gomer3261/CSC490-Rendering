@@ -29,9 +29,10 @@ public:
     void setEmission(float r, float g, float b);    // Ke r g b
     void setDissolve(float d);                      // d disolve depth (0 - 1)
     void setOpticalDensity(float d);                // Ni optical density (0 - 10)
+    void setAlpha(float alpha);                     // alpha value
     void setIlluminationModel(int model);           // illum (0 - 10)
     void setBumpTexture(QImage image_file);         // map_Bump Image File
-    void setNormalTexture(QImage image_file);         // map_Normal Image File
+    void setNormalTexture(QImage image_file);       // map_Normal Image File
 
     int getIlluminationModel() { return m_illumination_model; }
 

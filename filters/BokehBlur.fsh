@@ -11,7 +11,7 @@ vec2 texture_pixel = vec2(1.0/fbo_width,1.0/fbo_height); // Texel
 int samples = 4; //samples grow exponentially per ring (3*5^n)
 int rings = 10; //ring count
 
-float threshold = 0.4; //highlight threshold;
+float threshold = 0.8; //highlight threshold;
 float gain = 8.0; //highlight gain;
 
 float bias = 0.7; //bokeh edge bias
@@ -41,7 +41,7 @@ vec3 color(vec2 coords, float blur) //processing the sample
 
     // Adjusting color for luminance (Brightness adjusted to the way human eyes percieve it)
     float luminocity = dot(ret_color.rgb, luminocity_coeff);
-    float thresh = max((luminocity - threshold)*gain, 0.0);
+    float thresh = min(1.0, max((luminocity - threshold)*gain, 0.0));
     return ret_color + mix(vec3(0.0), ret_color, thresh*blur);
 }
 

@@ -55,6 +55,9 @@ void OpenGLView::paintGL()
                       QVector3D(0.0f, 1.0f, 0.0f));
     glLoadMatrixf(m_viewMatrix.constData());
 
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     if(m_scene != NULL) {
         m_scene->paintGL();
     } else {

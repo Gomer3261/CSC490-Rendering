@@ -89,6 +89,12 @@ void ObjMaterialLoader::parseObjMtlFile(QString path, QMap<QString, Material::Pt
             fscanf(file, "%f\n", &density);
             material->setOpticalDensity(density);
         }
+        else if ( strcmp( lineHeader, "alpha" ) == 0 )
+        {
+            float alpha;
+            fscanf(file, "%f\n", &alpha);
+            material->setAlpha(alpha);
+        }
         else if ( strcmp( lineHeader, "illum" ) == 0 )
         {
             int model;
