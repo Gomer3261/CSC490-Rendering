@@ -28,7 +28,7 @@ Shader* ShaderManager::getShader(int illumination_model)
         m_toon_shader->setLightingFlags(USE_AMBIENT | USE_DIFFUSE);
         return m_toon_shader;
     case 8:
-        m_multipass_sss_textured_shader->setLightingFlags(USE_BASIC_LIGHTING | USE_EMISSION);
+        m_multipass_sss_textured_shader->setLightingFlags(USE_BASIC_LIGHTING);
         return m_multipass_sss_textured_shader;
     case 7: // Ambient, Diffuse, Specular
         m_texture_shader->setLightingFlags(USE_BASIC_LIGHTING);
