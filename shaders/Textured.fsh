@@ -21,14 +21,14 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
         float NdotH = max(0.0, dot(reflection, eye));
 
         float Idiff = NdotL;
-        float Ispec = pow( NdotH, (1-gl_FrontMaterial.shininess)*1000 );
+        float Ispec = min(1.0, pow( NdotH, (1-texture2D(specular_texture, gl_TexCoord[0].xy).x*gl_FrontMaterial.shininess)*1000 ));
 
         // 'real' shading
         return
                 gl_FrontMaterial.emission * emission_on +
                 (gl_FrontMaterial.ambient * light.ambient * ambient_on) +
                 (vec4(texture2D(diffuse_texture, gl_TexCoord[0].xy).rgb, 1.0)  * light.diffuse * Idiff * diffuse_on) +
-                (vec4(texture2D(specular_texture, gl_TexCoord[0].xy).rgb, 1.0) * light.specular * Ispec * specular_on);
+                (gl_FrontMaterial.specular * light.specular * Ispec * specular_on);
 }
 
 vec4 lighting( void )
@@ -46,5 +46,5 @@ vec4 lighting( void )
 void main()
 {
     gl_FragData[0] = lighting();
-    gl_FragData[1] = vec4(((gl_FrontMaterial.emission + gl_FrontMaterial.diffuse) * emission_on), gl_FrontMaterial.diffuse.a);
+    gl_FragData[1] = vec4(((gl_FrontMaterial.emission + gl_FrontMaterial.diffuse) * emission_on).rgb, gl_FrontMaterial.diffuse.a);
 }

@@ -35,7 +35,7 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
     float NdotH = max(0.0, dot(reflection, eye));
 
     float Idiff = NdotL;
-    float Ispec = pow( NdotH, (1-gl_FrontMaterial.shininess)*1000 );
+    float Ispec = pow( NdotH, (1-texture2D(specular_texture, gl_TexCoord[0].xy).x*gl_FrontMaterial.shininess)*1000 );
 
     // Hightlight rims to simulate light reflecting under surface.
     float Iedge = 1.0 - max(0.0,dot(normal,eye));
@@ -45,7 +45,7 @@ vec4 lightSource( vec3 normal, vec3 position, gl_LightSourceParameters light )
             (gl_FrontMaterial.ambient * light.ambient * ambient_on) +
             (vec4(texture2D(diffuse_texture, gl_TexCoord[0].xy).rgb, 1.0) * light.diffuse * Idiff * diffuse_on) +
             (vec4(texture2D(diffuse_texture, gl_TexCoord[0].xy).rgb, 1.0) * Iedge * rim_multiplier * light.specular * gl_FrontMaterial.emission) +
-            (vec4(texture2D(specular_texture, gl_TexCoord[0].xy).rgb, 1.0) * light.specular * Ispec * specular_on);
+            (gl_FrontMaterial.specular * light.specular * Ispec * specular_on);
 }
 
 vec4 lighting( void )
