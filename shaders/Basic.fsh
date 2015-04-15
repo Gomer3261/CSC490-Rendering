@@ -44,5 +44,5 @@ vec4 lighting( void )
 void main()
 {
     gl_FragData[0] = lighting();
-    gl_FragData[1] = vec4(((gl_FrontMaterial.emission + gl_FrontMaterial.diffuse) * emission_on).xyz, 1.0);
+    gl_FragData[1] = vec4(((gl_FrontMaterial.emission + gl_FrontMaterial.diffuse) * emission_on).xyz, gl_FrontMaterial.diffuse.a);
 }
