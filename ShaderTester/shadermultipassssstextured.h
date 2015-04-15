@@ -6,7 +6,7 @@
 class ShaderMultipassSSSTextured : public ShaderMultipassSSS
 {
 public:
-    ShaderMultipassSSSTextured(QString vshader, QString fshader, QString vshader2, QString fshader2);
+    ShaderMultipassSSSTextured(QString vshader, QString fshader);
     ~ShaderMultipassSSSTextured();
 
     GLint m_uniform_diffuse;

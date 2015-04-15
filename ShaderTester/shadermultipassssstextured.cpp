@@ -1,7 +1,7 @@
 #include "shadermultipassssstextured.h"
 
-ShaderMultipassSSSTextured::ShaderMultipassSSSTextured(QString vshader, QString fshader, QString vshader2, QString fshader2) :
-    ShaderMultipassSSS(vshader, fshader, vshader2, fshader2),
+ShaderMultipassSSSTextured::ShaderMultipassSSSTextured(QString vshader, QString fshader) :
+    ShaderMultipassSSS(vshader, fshader),
     m_uniform_diffuse(0),
     m_uniform_normal(0),
     m_uniform_specular(0)
@@ -22,7 +22,7 @@ void ShaderMultipassSSSTextured::init()
 
 void ShaderMultipassSSSTextured::bindAttributes(int pass)
 {
-    if(pass == 1) {
+    if(pass == 2) {
         m_uniform_diffuse = glGetUniformLocation(m_programs[pass], "diffuse_texture");
         if (m_uniform_diffuse == -1) {
             qWarning() << "Could not bind uniform diffuse_texture";
@@ -44,7 +44,7 @@ void ShaderMultipassSSSTextured::updateAttributes(int pass)
 {
     ShaderMultipassSSS::updateAttributes(pass);
 
-    if(pass == 1) {
+    if(pass == 2) {
         glUniform1i(m_uniform_diffuse, 0);
         glUniform1i(m_uniform_normal, 2);
         glUniform1i(m_uniform_specular, 3);

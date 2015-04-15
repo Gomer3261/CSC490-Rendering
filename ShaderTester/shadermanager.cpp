@@ -3,9 +3,9 @@
 ShaderManager::ShaderManager() :
     m_basic_shader(new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Basic.fsh")),
     m_simple_sss_shader(new ShaderSimpleSSS("../../../../shaders/Basic.vsh", "../../../../shaders/SSS.fsh")),
-    m_multipass_sss_shader(new ShaderMultipassSSS("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Basic.vsh", "../../../../shaders/BackfaceSSS.fsh")),
+    m_multipass_sss_shader(new ShaderMultipassSSS("../../../../shaders/Basic.vsh", "../../../../shaders/SSSFinal.fsh")),
     m_texture_shader(new TextureShader("../../../../shaders/Textured.vsh", "../../../../shaders/Textured.fsh")),
-    m_multipass_sss_textured_shader(new ShaderMultipassSSSTextured("../../../../shaders/Basic.vsh", "../../../../shaders/Backface.fsh", "../../../../shaders/Textured.vsh", "../../../../shaders/BackfaceSSSTextured.fsh")),
+    m_multipass_sss_textured_shader(new ShaderMultipassSSSTextured("../../../../shaders/Textured.vsh", "../../../../shaders/SSSFinalTextured.fsh")),
     m_toon_shader(new Shader("../../../../shaders/Basic.vsh", "../../../../shaders/Toon.fsh"))
 {
 }

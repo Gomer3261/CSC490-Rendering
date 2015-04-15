@@ -1,26 +1,21 @@
 #include "shadermultipasssss.h"
 
-ShaderMultipassSSS::ShaderMultipassSSS(QString vshader, QString fshader, QString vshader2, QString fshader2) :
-    Shader(vshader, fshader, 2),
-    m_fbos(new GLuint[2]),
-    m_fbo_textures(new GLuint[2]),
-    m_fbo_depths(new GLuint[2]),
-    m_blur_program(0),
+ShaderMultipassSSS::ShaderMultipassSSS(QString vshader, QString fshader) :
+    Shader(vshader, fshader, 3),
+    m_fbos(new GLuint[3]),
+    m_fbo_textures(new GLuint[3]),
+    m_fbo_depths(new GLuint[3]),
     m_blur_vertices(0),
     m_attribute_v_coord_postproc(0),
     m_rim_multiplier(0.3f),
-    m_uniform_backface_width(0),
-    m_uniform_backface_height(0),
-    m_uniform_backface_texture(0),
-    m_uniform_backface_depth(0),
-    m_uniform_blurred_backface_width(0),
-    m_uniform_blurred_backface_height(0),
-    m_uniform_blurred_backface_texture(0),
-    m_uniform_blurred_backface_depth(0),
+    m_uniform_fbo_width(new GLint[3]),
+    m_uniform_fbo_height(new GLint[3]),
+    m_uniform_fbo_texture(new GLint[3]),
+    m_uniform_fbo_depth(new GLint[3]),
     m_uniform_rim_multiplier(0),
     m_result_fbo(0)
 {
-    init(vshader2, fshader2);
+    init();
 }
 
 ShaderMultipassSSS::~ShaderMultipassSSS()
@@ -31,36 +26,42 @@ ShaderMultipassSSS::~ShaderMultipassSSS()
     delete m_fbos;
     delete m_fbo_textures;
     delete m_fbo_depths;
+    delete m_uniform_fbo_width;
+    delete m_uniform_fbo_height;
+    delete m_uniform_fbo_texture;
+    delete m_uniform_fbo_depth;
 }
 
-void ShaderMultipassSSS::init(QString vshader, QString fshader)
+void ShaderMultipassSSS::init()
 {
+    glDeleteProgram(m_programs[0]);
     glDeleteProgram(m_programs[1]);
-    m_programs[1] = ShaderLoader::loadProgram(vshader, fshader);
-    m_blur_program = ShaderLoader::loadProgram("../../../../filters/Through.vsh", "../../../../shaders/BackfaceBlur.fsh");
+    m_programs[0] = ShaderLoader::loadProgram("../../../../shaders/Basic.vsh", "../../../../shaders/SSSBackface.fsh");
+    m_programs[1] = ShaderLoader::loadProgram("../../../../shaders/Basic.vsh", "../../../../shaders/SSSFrontface.fsh");
+    m_blur_program = ShaderLoader::loadProgram("../../../../filters/Through.vsh", "../../../../shaders/SSSBlur.fsh");
     for(int i=0; i<m_passes; i++) {
         bindAttributes(i);
         setupFBO(i);
     }
 
-    m_uniform_backface_width = glGetUniformLocation(m_blur_program, "backface_width");
-    if (m_uniform_backface_width == -1) {
-        qWarning() << "Could not bind uniform backface_width";
+    m_uniform_fbo_width[2] = glGetUniformLocation(m_blur_program, "fbo_width");
+    if (m_uniform_fbo_width[2] == -1) {
+        qWarning() << "Could not bind uniform fbo_width";
     }
 
-    m_uniform_backface_height = glGetUniformLocation(m_blur_program, "backface_height");
-    if (m_uniform_backface_height == -1) {
-        qWarning() << "Could not bind uniform backface_height";
+    m_uniform_fbo_height[2] = glGetUniformLocation(m_blur_program, "fbo_height");
+    if (m_uniform_fbo_height[2] == -1) {
+        qWarning() << "Could not bind uniform fbo_height";
     }
 
-    m_uniform_backface_texture = glGetUniformLocation(m_blur_program, "backface_texture");
-    if (m_uniform_backface_texture == -1) {
-        qWarning() << "Could not bind uniform backface_texture";
+    m_uniform_fbo_texture[2] = glGetUniformLocation(m_blur_program, "fbo_texture");
+    if (m_uniform_fbo_texture[2] == -1) {
+        qWarning() << "Could not bind uniform fbo_texture";
     }
 
-    m_uniform_backface_depth = glGetUniformLocation(m_blur_program, "backface_depth");
-    if (m_uniform_backface_depth == -1) {
-        qWarning() << "Could not bind uniform backface_depth";
+    m_uniform_fbo_depth[2] = glGetUniformLocation(m_blur_program, "fbo_depth");
+    if (m_uniform_fbo_depth[2] == -1) {
+        qWarning() << "Could not bind uniform fbo_depth";
     }
 
     m_attribute_v_coord_postproc = glGetAttribLocation(m_blur_program, "v_coord");
@@ -148,27 +149,29 @@ void ShaderMultipassSSS::bindAttributes(int pass)
 {
     Shader::bindAttributes(pass);
 
-    if(pass == m_passes-1) {
-        m_uniform_blurred_backface_width = glGetUniformLocation(m_programs[pass], "backface_width");
-        if (m_uniform_blurred_backface_width == -1) {
-            qWarning() << "Could not bind uniform blurred_backface_width";
+    if(pass > 0) {
+        m_uniform_fbo_width[pass-1] = glGetUniformLocation(m_programs[pass], "fbo_width");
+        if (m_uniform_fbo_width[pass-1] == -1) {
+            qWarning() << "Could not bind uniform fbo_width";
         }
 
-        m_uniform_blurred_backface_height = glGetUniformLocation(m_programs[pass], "backface_height");
-        if (m_uniform_blurred_backface_height == -1) {
-            qWarning() << "Could not bind uniform blurred_backface_height";
+        m_uniform_fbo_height[pass-1] = glGetUniformLocation(m_programs[pass], "fbo_height");
+        if (m_uniform_fbo_height[pass-1] == -1) {
+            qWarning() << "Could not bind uniform fbo_height";
         }
 
-        m_uniform_blurred_backface_texture = glGetUniformLocation(m_programs[pass], "backface_texture");
-        if (m_uniform_blurred_backface_texture == -1) {
-            qWarning() << "Could not bind uniform backface_texture";
+        m_uniform_fbo_texture[pass-1] = glGetUniformLocation(m_programs[pass], "fbo_texture");
+        if (m_uniform_fbo_texture[pass-1] == -1) {
+            qWarning() << "Could not bind uniform fbo_texture";
         }
 
-        m_uniform_blurred_backface_depth = glGetUniformLocation(m_programs[pass], "backface_depth");
-        if (m_uniform_blurred_backface_depth == -1) {
-            qWarning() << "Could not bind uniform blurred_backface_depth";
+        m_uniform_fbo_depth[pass-1] = glGetUniformLocation(m_programs[pass], "fbo_depth");
+        if (m_uniform_fbo_depth[pass-1] == -1) {
+            qWarning() << "Could not bind uniform fbo_depth";
         }
+    }
 
+    if(pass == 1) {
         m_uniform_rim_multiplier = glGetUniformLocation(m_programs[pass], "rim_multiplier");
         if (m_uniform_rim_multiplier == -1) {
             qWarning() << "Could not bind uniform rim_multiplier";
@@ -180,17 +183,18 @@ void ShaderMultipassSSS::updateAttributes(int pass)
 {
     Shader::updateAttributes(pass);
 
-    if(pass == 1) {
+    if(pass > 0) {
         glActiveTexture(GL_TEXTURE0 + 4);
-        glBindTexture(GL_TEXTURE_2D, m_fbo_textures[pass]);
+        glBindTexture(GL_TEXTURE_2D, m_fbo_textures[(pass == 1) ? 0 : 2]);
         glActiveTexture(GL_TEXTURE0 + 5);
-        glBindTexture(GL_TEXTURE_2D, m_fbo_depths[pass]);
+        glBindTexture(GL_TEXTURE_2D, m_fbo_depths[(pass == 1) ? 0 : 2]);
 
-        glUniform1i(m_uniform_blurred_backface_width, m_screen_width);
-        glUniform1i(m_uniform_blurred_backface_height, m_screen_height);
-        glUniform1i(m_uniform_blurred_backface_texture, 4);
-        glUniform1i(m_uniform_blurred_backface_depth, 5);
-
+        glUniform1i(m_uniform_fbo_width[pass-1], m_screen_width);
+        glUniform1i(m_uniform_fbo_height[pass-1], m_screen_height);
+        glUniform1i(m_uniform_fbo_texture[pass-1], 4);
+        glUniform1i(m_uniform_fbo_depth[pass-1], 5);
+    }
+    if(pass == 1) {
         glUniform1f(m_uniform_rim_multiplier, m_rim_multiplier);
     }
 }
@@ -199,15 +203,23 @@ void ShaderMultipassSSS::beginGL(int pass)
 {
     if(pass == 0) {
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &m_result_fbo);
-
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbos[0]);
         glCullFace(GL_FRONT);
+    }
+    if(pass < 2) {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbos[pass]);
+        if(pass == 1) {
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbos[0]);
+            GLfloat emission[4];
+            glGetMaterialfv(GL_FRONT, GL_EMISSION, emission);
+            glClearColor(emission[0], emission[1], emission[2], emission[3]);
+        } else {
+            glClearColor(0.0, 0.0, 0.0, 1.0);
+        }
 
-        glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     }
     else {
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbos[1]);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbos[2]);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_result_fbo);
     }
     Shader::beginGL(pass);
@@ -217,8 +229,8 @@ void ShaderMultipassSSS::endGL(int pass)
 {
     glCullFace(GL_BACK);
 
-    if(pass == 0) {
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbos[1]);
+    if(pass == 1) {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbos[2]);
 
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -226,14 +238,14 @@ void ShaderMultipassSSS::endGL(int pass)
         glUseProgram(m_blur_program);
 
         glActiveTexture(GL_TEXTURE0 + 6);
-        glBindTexture(GL_TEXTURE_2D, m_fbo_textures[0]);
+        glBindTexture(GL_TEXTURE_2D, m_fbo_textures[1]);
         glActiveTexture(GL_TEXTURE0 + 7);
-        glBindTexture(GL_TEXTURE_2D, m_fbo_depths[0]);
+        glBindTexture(GL_TEXTURE_2D, m_fbo_depths[1]);
 
-        glUniform1i(m_uniform_backface_width, m_screen_width);
-        glUniform1i(m_uniform_backface_height, m_screen_height);
-        glUniform1i(m_uniform_backface_texture, 6);
-        glUniform1i(m_uniform_backface_depth, 7);
+        glUniform1i(m_uniform_fbo_width[2], m_screen_width);
+        glUniform1i(m_uniform_fbo_height[2], m_screen_height);
+        glUniform1i(m_uniform_fbo_texture[2], 6);
+        glUniform1i(m_uniform_fbo_depth[2], 7);
 
         glEnableVertexAttribArray(m_attribute_v_coord_postproc);
 
@@ -250,6 +262,5 @@ void ShaderMultipassSSS::endGL(int pass)
         glDisableVertexAttribArray(m_attribute_v_coord_postproc);
     }
 
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_result_fbo);
     glClearColor(1.0, 1.0, 1.0, 1.0);
 }
