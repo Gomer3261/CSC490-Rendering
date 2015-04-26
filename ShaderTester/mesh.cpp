@@ -67,16 +67,16 @@ void Mesh::addNormal(float x, float y, float z) {
     }
 }
 
-void Mesh::addTriangle(unsigned int vertexIndex[3], unsigned int uvIndex[3], unsigned int normalIndex[3]) {
+void Mesh::addTriangle(int vertexIndex[3], int uvIndex[3], int normalIndex[3]) {
     if(m_vertexBuffer == 0) {
         m_vertexCount += 3;
 
         m_vertexIndicies.push_back(vertexIndex[0]);
         m_vertexIndicies.push_back(vertexIndex[1]);
         m_vertexIndicies.push_back(vertexIndex[2]);
-        m_uvIndicies.push_back(uvIndex[0]);
-        m_uvIndicies.push_back(uvIndex[1]);
-        m_uvIndicies.push_back(uvIndex[2]);
+        m_uvIndicies.push_back((uvIndex[0] != -1) ? uvIndex[0] : m_uvData.length() );
+        m_uvIndicies.push_back((uvIndex[1] != -1) ? uvIndex[1] : m_uvData.length() );
+        m_uvIndicies.push_back((uvIndex[2] != -1) ? uvIndex[2] : m_uvData.length() );
         m_normalIndicies.push_back(normalIndex[0]);
         m_normalIndicies.push_back(normalIndex[1]);
         m_normalIndicies.push_back(normalIndex[2]);
@@ -90,6 +90,9 @@ void Mesh::setMaterial(Material::Ptr material)
 
 void Mesh::finalize() {
     qDebug() << "Finalizing Model:" << m_vertexCount << " vertices";
+
+    // Forces a 0,0 uv index for missing indices.
+    m_uvData.push_back(new QVector2D(0, 0));
 
     //Allocate for worst case scenario
     //Cut the empty ends off when transfering to GPU.

@@ -28,7 +28,7 @@ public:
     void addVertex(float x, float y, float z);
     void addUV(float u, float v);
     void addNormal(float x, float y, float z);
-    void addTriangle(unsigned int vertexIndex[3], unsigned int uvIndex[3], unsigned int normalIndex[3]);
+    void addTriangle(int vertexIndex[3], int uvIndex[3], int normalIndex[3]);
     void setMaterial(Material::Ptr material);
     void finalize();
 

@@ -114,20 +114,50 @@ void ObjLoader::parseObjFile(QString path)
             }
             else if ( strcmp( lineHeader, "f" ) == 0 )
             {
-                unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-                int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-                if (matches != 9){
-                    printf("File can't be read by our simple parser : ( Try exporting with other options\n");
-                    return;
-                }
+                fflush(file);
+                long position = ftell(file);
+                int vertexIndex[3], uvIndex[3], normalIndex[3];
+                int vertex_index = 0;
+                int matches = fscanf(file, "%d/%d/%d", &vertexIndex[vertex_index], &uvIndex[vertex_index], &normalIndex[vertex_index]);
+                while(matches > 0) {
+                    // I don't like this structure, but I don't want to re-write it... :S
+                    if(matches == 3) {
+                        vertexIndex[vertex_index] = vertexIndex[vertex_index]-m_vertexOffset;
+                        uvIndex[vertex_index] = uvIndex[vertex_index]-m_uvOffset;
+                        normalIndex[vertex_index] = normalIndex[vertex_index]-m_normalOffset;
+                    }
+                    else if(matches == 2) {
+                        fseek(file,position,SEEK_SET);
+                        matches = fscanf(file, "%d/%d/", &vertexIndex[vertex_index], &normalIndex[vertex_index]);
+                        qDebug() << "File can't be read by our simple parser : ( Not generating normals )\n" << matches;
+                        return;
+                    }
+                    else {
+                        fseek(file,position,SEEK_SET);
+                        matches = fscanf(file, "%d//%d", &vertexIndex[vertex_index], &normalIndex[vertex_index]);
+                        if(matches != 2) {
+                            qDebug() << "File can't be read by our simple parser : ( Not generating normals and uvs )\n" << matches;
+                            return;
+                        }
+                        vertexIndex[vertex_index] = vertexIndex[vertex_index]-m_vertexOffset;
+                        uvIndex[vertex_index] = -1;
+                        normalIndex[vertex_index] = normalIndex[vertex_index]-m_normalOffset;
+                    }
 
-                /* Indexes in an OBJ file start at 1, so we must reduce all indexes by 1 */
-                for (int i=0; i<3; i++) {
-                    vertexIndex[i] = vertexIndex[i]-m_vertexOffset;
-                    uvIndex[i] = uvIndex[i]-m_uvOffset;
-                    normalIndex[i] = normalIndex[i]-m_normalOffset;
+
+                    if(vertex_index < 2) {
+                        vertex_index++;
+                    } else {
+                        mesh->addTriangle(vertexIndex, uvIndex, normalIndex);
+
+                        // triangulation always uses index 0, and the last vertex in the previous triangle.
+                        vertexIndex[1] = vertexIndex[2];
+                        uvIndex[1] = uvIndex[2];
+                        normalIndex[1] = normalIndex[2];
+                    }
+                    position = ftell(file);
+                    matches = fscanf(file, "%d/%d/%d", &vertexIndex[vertex_index], &uvIndex[vertex_index], &normalIndex[vertex_index]);
                 }
-                mesh->addTriangle(vertexIndex, uvIndex, normalIndex);
             }
         }
     }
